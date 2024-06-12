@@ -5,7 +5,6 @@ import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
 import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyRequestEvent;
 import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyResponseEvent;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.simongarton.platform.factory.LambdaRequestHandlerFactory;
 import com.simongarton.platform.factory.PltfrmCommonFactory;
 import com.simongarton.platform.model.APIMethod;
@@ -55,15 +54,6 @@ public class WeatherLambdaRequestHandler implements RequestHandler<APIGatewayPro
                     method,
                     APIStatusCode.UNKNOWN_METHOD.toString());
 
-        } catch (final JsonProcessingException e) {
-
-            LOG.error(e.getMessage());
-
-            return this.lambdaRequestHandlerFactory.standardResponse(APIStatusCode.BAD_REQUEST,
-                    this.getClass().getSimpleName(),
-                    method,
-                    e.getMessage());
-
         } catch (final Exception e) {
 
             LOG.error(e.getMessage());
@@ -75,8 +65,7 @@ public class WeatherLambdaRequestHandler implements RequestHandler<APIGatewayPro
         }
     }
 
-    private APIGatewayProxyResponseEvent getWeatherResponse(final APIGatewayProxyRequestEvent event)
-            throws JsonProcessingException {
+    private APIGatewayProxyResponseEvent getWeatherResponse(final APIGatewayProxyRequestEvent event) {
 
         return this.lambdaRequestHandlerFactory.standardResponse(APIStatusCode.OK,
                 this.getClass().getSimpleName(),

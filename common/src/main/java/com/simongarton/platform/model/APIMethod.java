@@ -2,6 +2,7 @@ package com.simongarton.platform.model;
 
 import lombok.Getter;
 
+@Getter
 public enum APIMethod {
 
     GET("GET"),
@@ -10,7 +11,6 @@ public enum APIMethod {
     DELETE("DELETE"),
     PATCH("PATCH");
 
-    @Getter
     private final String method;
 
     APIMethod(final String method) {

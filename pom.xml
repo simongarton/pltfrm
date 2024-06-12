@@ -57,14 +57,10 @@
 
         <dependency>
             <groupId>com.amazonaws</groupId>
-            <artifactId>aws-java-sdk-lambda</artifactId>
-            <version>${aws-version-1}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.amazonaws</groupId>
             <artifactId>aws-lambda-java-core</artifactId>
             <version>${aws-version-core}</version>
         </dependency>
+        <!-- this is needed for the events it should respond to -->
         <dependency>
             <groupId>com.amazonaws</groupId>
             <artifactId>aws-lambda-java-events</artifactId>
@@ -76,6 +72,7 @@
             <artifactId>cloudwatch</artifactId>
             <version>${aws-version-2}</version>
         </dependency>
+        
         <dependency>
             <groupId>com.amazonaws</groupId>
             <artifactId>aws-java-sdk-s3</artifactId>

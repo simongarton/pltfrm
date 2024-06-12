@@ -2,6 +2,7 @@ package com.simongarton.platform.model;
 
 import lombok.Getter;
 
+@Getter
 public enum APIStatusCode {
 
     OK(200),
@@ -13,7 +14,6 @@ public enum APIStatusCode {
     RATE_LIMIT_EXCEEDED(429),
     INTERNAL_SERVER_ERROR(500);
 
-    @Getter
     private final int statusCode;
 
     APIStatusCode(final int statusCode) {

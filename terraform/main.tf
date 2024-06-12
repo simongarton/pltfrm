@@ -3,7 +3,7 @@ module "lambda" {
   source = "./lambda"
 
   openweathermap-api-key = "SECRET"
-  openweathermap-url     = "http://api.openweathermap.org/data/3.0/onecall"
+  openweathermap-url     = "https://api.openweathermap.org/data/3.0/onecall"
 }
 
 module "api_gateway" {

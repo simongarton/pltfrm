@@ -28,6 +28,6 @@ GET {url}/weather : text description of the weather now in Auckland.
 
 ## Notes
 
-I wanted to use AWS v2 exclusively ... but it doesn't look like all the functionality is there yet. So I'm using v1 for
-now.
-e.g. https://docs.aws.amazon.com/lambda/latest/dg/java-handler.html
+- I wanted to use AWS v2 exclusively ... but it doesn't look like all the functionality is there yet. So I'm using v1
+  for now. e.g. https://docs.aws.amazon.com/lambda/latest/dg/java-handler.html
+- I wanted to use Java17, but AWS doesn't support it yet - or at least, not through OpenTofu. So I'm using 11.
