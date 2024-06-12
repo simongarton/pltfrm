@@ -70,7 +70,7 @@ public class WeatherLambdaRequestHandler implements RequestHandler<APIGatewayPro
         return this.lambdaRequestHandlerFactory.standardResponse(APIStatusCode.OK,
                 this.getClass().getSimpleName(),
                 APIMethod.GET.getMethod(),
-                this.processor.process()
+                this.processor.getWeatherSummary()
         );
     }
 }

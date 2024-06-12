@@ -32,12 +32,25 @@ class WeatherLambdaProcessorTest {
     }
 
     @Test
-    void process() {
+    void getWeatherSummary() {
         // given
         final WeatherLambdaProcessor weatherLambdaProcessor = new WeatherLambdaProcessor(this.url, this.apiKey);
 
         // when
-        final String actual = weatherLambdaProcessor.process();
+        final String actual = weatherLambdaProcessor.getWeatherSummary();
+
+        // then
+        assertThat(actual, is(notNullValue()));
+        System.out.println(actual);
+    }
+
+    @Test
+    void getWeatherDetails() {
+        // given
+        final WeatherLambdaProcessor weatherLambdaProcessor = new WeatherLambdaProcessor(this.url, this.apiKey);
+
+        // when
+        final String actual = weatherLambdaProcessor.getWeatherDetails();
 
         // then
         assertThat(actual, is(notNullValue()));
