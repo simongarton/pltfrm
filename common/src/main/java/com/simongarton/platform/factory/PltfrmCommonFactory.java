@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import com.simongarton.platform.service.PltfrmSSMService;
 
 import java.time.format.DateTimeFormatter;
 
@@ -35,5 +36,13 @@ public class PltfrmCommonFactory {
 
     public static DateTimeFormatter getDateFormatter() {
         return DateTimeFormatter.ISO_DATE;
+    }
+
+    public static LambdaRequestHandlerFactory getLambdaRequestHandlerFactory() {
+        return new LambdaRequestHandlerFactory();
+    }
+
+    public static PltfrmSSMService getPltfrmSSMService() {
+        return new PltfrmSSMService();
     }
 }

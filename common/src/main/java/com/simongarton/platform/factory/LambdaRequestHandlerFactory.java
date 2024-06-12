@@ -44,7 +44,7 @@ public class LambdaRequestHandlerFactory {
 
         return this.buildResponse(APIMessage.builder()
                         .httpCode(apiStatusCode.getStatusCode())
-                        .message(className + " : " + message)
+                        .message(message)
                         .build(),
                 apiStatusCode.getStatusCode());
     }

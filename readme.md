@@ -1,6 +1,6 @@
 # pltfrm
 
-Welcome to `pltfrm` : an AWS platform, designed as a portfolio, demonstration site, and a chance to explore new 
+Welcome to `pltfrm` : an AWS platform, designed as a portfolio, demonstration site, and a chance to explore new
 technologies and ideas.
 
 ## Overview
@@ -11,6 +11,11 @@ This stage is a simple weather application, which uses the OpenWeatherMap API to
 location - where I live. It exposes APIs to call for current and forecasted weather, and also stores data in Timescale,
 AWS's time-series database, that allows me to (a) build up history, and also (b) see how forecasts can change over time.
 
+Endpoints:
+
+```
+GET {url}/weather : text description of the weather now in Auckland.
+```
 
 ## Software used
 
@@ -23,5 +28,6 @@ AWS's time-series database, that allows me to (a) build up history, and also (b)
 
 ## Notes
 
-I wanted to use AWS v2 exclusively ... but it doesn't look like all the functionality is there yet. So I'm using v1 for now.
+I wanted to use AWS v2 exclusively ... but it doesn't look like all the functionality is there yet. So I'm using v1 for
+now.
 e.g. https://docs.aws.amazon.com/lambda/latest/dg/java-handler.html
