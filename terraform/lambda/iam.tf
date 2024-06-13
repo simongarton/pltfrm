@@ -78,6 +78,23 @@ resource "aws_iam_policy" "pltfrm_s3_policy" {
   })
 }
 
+resource "aws_iam_policy" "pltfrm_sns_policy" {
+  name = "pltfrm-sns-policy"
+
+  policy = jsonencode({
+    Version   = "2012-10-17"
+    Statement = [
+      {
+        Effect = "Allow"
+        Action = [
+          "sns:Publish"
+        ]
+        Resource = "*"
+      },
+    ]
+  })
+}
+
 resource "aws_iam_role_policy_attachment" "aws_lambda_basic_execution_attach" {
   role       = aws_iam_role.pltfrm_lambda_iam.name
   policy_arn = data.aws_iam_policy.aws_lambda_basic_execution_pltfrm_role.arn
@@ -101,4 +118,9 @@ resource "aws_iam_role_policy_attachment" "pltfrm_s3_kms_policy_attach" {
 resource "aws_iam_role_policy_attachment" "pltfrm_s3_policy_attach" {
   role       = aws_iam_role.pltfrm_lambda_iam.name
   policy_arn = aws_iam_policy.pltfrm_s3_policy.arn
+}
+
+resource "aws_iam_role_policy_attachment" "pltfrm_sns_policy_attach" {
+  role       = aws_iam_role.pltfrm_lambda_iam.name
+  policy_arn = aws_iam_policy.pltfrm_sns_policy.arn
 }

@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.simongarton.platform.service.PltfrmS3Service;
+import com.simongarton.platform.service.PltfrmSNSService;
 import com.simongarton.platform.service.PltfrmSSMService;
 
 import java.time.format.DateTimeFormatter;
@@ -49,5 +50,9 @@ public class PltfrmCommonFactory {
 
     public static PltfrmS3Service getPltfrmS3Service() {
         return new PltfrmS3Service();
+    }
+
+    public static PltfrmSNSService getPltfrmSNSService() {
+        return new PltfrmSNSService();
     }
 }

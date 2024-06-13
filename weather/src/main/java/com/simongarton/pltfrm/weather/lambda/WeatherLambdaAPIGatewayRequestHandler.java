@@ -9,9 +9,9 @@ import com.simongarton.platform.factory.LambdaRequestHandlerFactory;
 import com.simongarton.platform.factory.PltfrmCommonFactory;
 import com.simongarton.platform.model.APIMethod;
 import com.simongarton.platform.model.APIStatusCode;
-import com.simongarton.platform.service.PltfrmS3Service;
 import com.simongarton.platform.service.PltfrmSSMService;
-import com.simongarton.pltfrm.weather.lambda.processor.WeatherLambdaProcessor;
+import com.simongarton.pltfrm.weather.lambda.processor.OpenWeatherMapClient;
+import com.simongarton.pltfrm.weather.lambda.processor.WeatherLambdaAPIGatewayProcessor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.MDC;
@@ -24,14 +24,14 @@ public class WeatherLambdaAPIGatewayRequestHandler implements RequestHandler<API
     private static final String WEATHER_API_KEY = "/pltfrm/openweathermap-api-key";
 
     final private LambdaRequestHandlerFactory lambdaRequestHandlerFactory;
-    final private WeatherLambdaProcessor processor;
+    final private WeatherLambdaAPIGatewayProcessor processor;
 
     public WeatherLambdaAPIGatewayRequestHandler() {
         final PltfrmSSMService pltfrmSSMService = PltfrmCommonFactory.getPltfrmSSMService();
         final String url = pltfrmSSMService.getParameterValue(WEATHER_URL);
         final String apiKey = pltfrmSSMService.getSecureParameterValue(WEATHER_API_KEY);
-        final PltfrmS3Service pltfrmS3Service = PltfrmCommonFactory.getPltfrmS3Service();
-        this.processor = new WeatherLambdaProcessor(url, apiKey, pltfrmS3Service);
+        final OpenWeatherMapClient openWeatherMapClient = new OpenWeatherMapClient(url, apiKey);
+        this.processor = new WeatherLambdaAPIGatewayProcessor(openWeatherMapClient);
         this.lambdaRequestHandlerFactory = PltfrmCommonFactory.getLambdaRequestHandlerFactory();
     }
 
