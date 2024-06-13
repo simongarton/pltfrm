@@ -4,9 +4,9 @@ package com.simongarton.pltfrm.weather.lambda.processor;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.simongarton.platform.exception.InternalServerErrorException;
 import com.simongarton.platform.factory.PltfrmCommonFactory;
+import com.simongarton.platform.utils.DateTimeUtils;
 import com.simongarton.pltfrm.weather.lambda.WeatherLambdaRequestHandler;
-import com.simongarton.pltfrm.weather.lambda.model.WeatherCurrentAndForecast;
-import com.simongarton.pltfrm.weather.lambda.model.WeatherOverview;
+import com.simongarton.pltfrm.weather.lambda.model.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -53,6 +53,30 @@ public class WeatherLambdaProcessor {
             throw new InternalServerErrorException("Failed to get weather : " + e.getMessage());
         }
     }
+
+    public void debugWeatherDates() {
+        try {
+            final WeatherCurrentAndForecast weatherCurrentAndForecast = this.getWeatherDetailsFromAPI();
+            LOG.info("Current time : {}", DateTimeUtils.offsetDateTimeNowToSeconds());
+            final WeatherCurrent weatherCurrent = weatherCurrentAndForecast.getCurrent();
+            LOG.info("Current Weather date : {}", DateTimeUtils.longToOffsetDateTime(weatherCurrent.getDt()));
+            LOG.info("Minute Weather dates :");
+            for (final WeatherMinute weatherMinute : weatherCurrentAndForecast.getMinuteList()) {
+                LOG.info("\t{}", DateTimeUtils.longToOffsetDateTime(weatherMinute.getDt()));
+            }
+            LOG.info("Hour Weather dates :");
+            for (final WeatherHour weatherHour : weatherCurrentAndForecast.getHourList()) {
+                LOG.info("\t{}", DateTimeUtils.longToOffsetDateTime(weatherHour.getDt()));
+            }
+            LOG.info("Day Weather dates :");
+            for (final WeatherDay weatherDay : weatherCurrentAndForecast.getDayList()) {
+                LOG.info("\t{}", DateTimeUtils.longToOffsetDateTime(weatherDay.getDt()));
+            }
+        } catch (final URISyntaxException | IOException | InterruptedException e) {
+            throw new InternalServerErrorException("Failed to get weather : " + e.getMessage());
+        }
+    }
+
 
     private String getWeatherSummaryFromAPI() throws URISyntaxException, IOException, InterruptedException {
         final HttpRequest request = HttpRequest.newBuilder()

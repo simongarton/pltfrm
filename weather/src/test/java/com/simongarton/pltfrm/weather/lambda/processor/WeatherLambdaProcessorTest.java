@@ -56,4 +56,16 @@ class WeatherLambdaProcessorTest {
         assertThat(actual, is(notNullValue()));
         System.out.println(actual);
     }
+
+    @Test
+    void debugWeatherDates() {
+        // given
+        final WeatherLambdaProcessor weatherLambdaProcessor = new WeatherLambdaProcessor(this.url, this.apiKey);
+
+        // when
+        weatherLambdaProcessor.debugWeatherDates();
+
+        // then
+        assertThat(true, is(true));
+    }
 }

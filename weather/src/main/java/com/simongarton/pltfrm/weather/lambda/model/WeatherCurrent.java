@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
 import java.util.List;
+import java.util.Map;
 
 @Data
 public class WeatherCurrent {
@@ -28,4 +29,5 @@ public class WeatherCurrent {
     @JsonProperty("wind_gust")
     private double windGust;
     private List<Weather> weather;
+    private Map<String, Double> rain;
 }
