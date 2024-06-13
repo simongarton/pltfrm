@@ -2,6 +2,7 @@ package com.simongarton.platform.utils;
 
 import java.time.Instant;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 
 public class DateTimeUtils {
 
@@ -13,4 +14,8 @@ public class DateTimeUtils {
         return OffsetDateTime.now().withNano(0);
     }
 
+    public static String nowAsFileNameISOinUTC() {
+        final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH-mm-ss'Z'");
+        return dateTimeFormatter.format(OffsetDateTime.now().withNano(0));
+    }
 }

@@ -8,7 +8,8 @@ resource "aws_lambda_function" "weather_api" {
   memory_size                    = 512
   timeout                        = 90
   reserved_concurrent_executions = 1
-  tags                           = {
+
+  tags = {
     Name    = "Weather APIGateway Lambda"
     Project = "pltfrm"
     Owner   = "simon.garton@gmail.com"
@@ -25,7 +26,8 @@ resource "aws_lambda_function" "weather_eventbridge" {
   memory_size                    = 512
   timeout                        = 90
   reserved_concurrent_executions = 1
-  tags                           = {
+
+  tags = {
     Name    = "Weather EventBridge Lambda"
     Project = "pltfrm"
     Owner   = "simon.garton@gmail.com"

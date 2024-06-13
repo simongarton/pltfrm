@@ -22,3 +22,10 @@ module "eventbridge" {
 
   weather_eventbridge_lambda = module.lambda.weather_eventbridge_lambda
 }
+
+module "s3" {
+
+  source = "./s3"
+
+  bucket_name = "pltfrm-weather-file"
+}

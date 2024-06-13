@@ -24,7 +24,7 @@ resource "aws_scheduler_schedule" "eventbridge-schedule" {
     dead_letter_config {
       arn = aws_sqs_queue.scheduler-dlq.arn
     }
-    
+
     input = jsonencode(
       { "msg" : "Hello from EventBridge Scheduler!" }
     )
@@ -46,6 +46,14 @@ resource "aws_iam_policy" "scheduler_policy" {
             "sqs:SendMessage"
           ],
           "Resource" : "*"
+        },
+        {
+          "Sid" : "Lambda",
+          "Effect" : "Allow",
+          "Action" : [
+            "lambda:InvokeFunction"
+          ],
+          "Resource" : var.weather_eventbridge_lambda.arn
         }
       ]
     }

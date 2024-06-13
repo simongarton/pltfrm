@@ -9,6 +9,7 @@ import com.simongarton.platform.factory.LambdaRequestHandlerFactory;
 import com.simongarton.platform.factory.PltfrmCommonFactory;
 import com.simongarton.platform.model.APIMethod;
 import com.simongarton.platform.model.APIStatusCode;
+import com.simongarton.platform.service.PltfrmS3Service;
 import com.simongarton.platform.service.PltfrmSSMService;
 import com.simongarton.pltfrm.weather.lambda.processor.WeatherLambdaProcessor;
 import org.slf4j.Logger;
@@ -29,7 +30,8 @@ public class WeatherLambdaAPIGatewayRequestHandler implements RequestHandler<API
         final PltfrmSSMService pltfrmSSMService = PltfrmCommonFactory.getPltfrmSSMService();
         final String url = pltfrmSSMService.getParameterValue(WEATHER_URL);
         final String apiKey = pltfrmSSMService.getSecureParameterValue(WEATHER_API_KEY);
-        this.processor = new WeatherLambdaProcessor(url, apiKey);
+        final PltfrmS3Service pltfrmS3Service = PltfrmCommonFactory.getPltfrmS3Service();
+        this.processor = new WeatherLambdaProcessor(url, apiKey, pltfrmS3Service);
         this.lambdaRequestHandlerFactory = PltfrmCommonFactory.getLambdaRequestHandlerFactory();
     }
 
