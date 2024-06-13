@@ -11,6 +11,8 @@ This stage is a simple weather application, which uses the OpenWeatherMap API to
 location - where I live. It exposes APIs to call for current and forecasted weather, and also stores data in Timescale,
 AWS's time-series database, that allows me to (a) build up history, and also (b) see how forecasts can change over time.
 
+![Diagram](./documentation/images/pltfrm-wthr.png)
+
 Endpoints:
 
 ```
@@ -26,8 +28,4 @@ GET {url}/weather : text description of the weather now in Auckland.
 
 - Squidfunk : https://github.com/squidfunk/terraform-aws-api-gateway-enable-cors
 
-## Notes
 
-- I wanted to use AWS v2 exclusively ... but it doesn't look like all the functionality is there yet. So I'm using v1
-  for now. e.g. https://docs.aws.amazon.com/lambda/latest/dg/java-handler.html
-- I wanted to use Java17, but AWS doesn't support it yet - or at least, not through OpenTofu. So I'm using 11.

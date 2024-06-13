@@ -2,8 +2,12 @@ data "aws_iam_policy" "aws_lambda_basic_execution_pltfrm_role" {
   arn = "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
 }
 
+data "aws_iam_policy" "aws_ssm_read_only_access" {
+  arn = "arn:aws:iam::aws:policy/AmazonSSMReadOnlyAccess"
+}
+
 resource "aws_iam_role" "pltfrm_lambda_iam" {
-  name = "pltfrm_lambda-iam"
+  name = "pltfrm-lambda-iam"
 
   assume_role_policy = jsonencode({
     Version   = "2012-10-17"
@@ -74,7 +78,17 @@ resource "aws_iam_policy" "pltfrm_s3_policy" {
   })
 }
 
-resource "aws_iam_role_policy_attachment" "iam_pass_role_pltfrm_attach" {
+resource "aws_iam_role_policy_attachment" "aws_lambda_basic_execution_attach" {
+  role       = aws_iam_role.pltfrm_lambda_iam.name
+  policy_arn = data.aws_iam_policy.aws_lambda_basic_execution_pltfrm_role.arn
+}
+
+resource "aws_iam_role_policy_attachment" "aws_ssm_read_only_access_attach" {
+  role       = aws_iam_role.pltfrm_lambda_iam.name
+  policy_arn = data.aws_iam_policy.aws_ssm_read_only_access.arn
+}
+
+resource "aws_iam_role_policy_attachment" "pltfrm_iam_pass_role_attach" {
   role       = aws_iam_role.pltfrm_lambda_iam.name
   policy_arn = aws_iam_policy.pltfrm_iam_pass_role.arn
 }
