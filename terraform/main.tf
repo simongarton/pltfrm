@@ -13,6 +13,12 @@ module "api_gateway" {
   account_id = var.account_id
   region     = var.region
 
-  weather_lambda = module.lambda.weather_lambda
+  weather_lambda = module.lambda.weather_api_lambda
 }
 
+module "eventbridge" {
+
+  source = "./eventbridge"
+
+  weather_eventbridge_lambda = module.lambda.weather_eventbridge_lambda
+}

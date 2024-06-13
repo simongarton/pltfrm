@@ -1,5 +1,5 @@
 variable "lambda_runtime" {
-  default = "java11"
+  default = "java17"
 }
 
 variable "weather_lambda_filename" {

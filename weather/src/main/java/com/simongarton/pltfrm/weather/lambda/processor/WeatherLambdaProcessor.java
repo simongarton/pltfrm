@@ -5,7 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.simongarton.platform.exception.InternalServerErrorException;
 import com.simongarton.platform.factory.PltfrmCommonFactory;
 import com.simongarton.platform.utils.DateTimeUtils;
-import com.simongarton.pltfrm.weather.lambda.WeatherLambdaRequestHandler;
+import com.simongarton.pltfrm.weather.lambda.WeatherLambdaAPIGatewayRequestHandler;
 import com.simongarton.pltfrm.weather.lambda.model.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,7 +19,7 @@ import java.net.http.HttpResponse;
 
 public class WeatherLambdaProcessor {
 
-    private static final Logger LOG = LoggerFactory.getLogger(WeatherLambdaRequestHandler.class);
+    private static final Logger LOG = LoggerFactory.getLogger(WeatherLambdaAPIGatewayRequestHandler.class);
 
     private static final String X_API_KEY = "x-api-key";
 
