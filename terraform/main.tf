@@ -4,6 +4,8 @@ module "lambda" {
 
   openweathermap-api-key = "SECRET"
   openweathermap-url     = "https://api.openweathermap.org/data/3.0/onecall"
+
+  application_key_arn = module.kms.application_key_arn
 }
 
 module "api_gateway" {
@@ -23,9 +25,16 @@ module "eventbridge" {
   weather_eventbridge_lambda = module.lambda.weather_eventbridge_lambda
 }
 
+module "kms" {
+
+  source = "./kms"
+}
+
+
 module "s3" {
 
   source = "./s3"
 
-  bucket_name = "pltfrm-weather-file"
+  bucket_name        = "pltfrm-weather-file"
+  application_key_id = module.kms.application_key_id
 }

@@ -9,3 +9,5 @@ variable "weather_lambda_filename" {
 variable "openweathermap-url" {}
 
 variable "openweathermap-api-key" {}
+
+variable "application_key_arn" {}

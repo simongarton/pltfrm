@@ -1,13 +1,9 @@
-resource "aws_cloudwatch_event_bus" "scheduler-custom-event-bus" {
-  name = "scheduler-event-bus"
-}
-
 resource "aws_sqs_queue" "scheduler-dlq" {
-  name = "scheduler-dlq"
+  name = "pltfrm-eventbridge-scheduler-dlq"
 }
 
 resource "aws_scheduler_schedule" "eventbridge-schedule" {
-  name = "eventbridge-schedule"
+  name = "pltfrm-eventbridge-schedule"
 
   flexible_time_window {
     mode = "OFF"
@@ -32,7 +28,7 @@ resource "aws_scheduler_schedule" "eventbridge-schedule" {
 }
 
 resource "aws_iam_policy" "scheduler_policy" {
-  name = "scheduler_policy"
+  name = "pltfrm-scheduler-policy"
 
   policy = jsonencode(
     {
@@ -61,7 +57,7 @@ resource "aws_iam_policy" "scheduler_policy" {
 }
 
 resource "aws_iam_role" "scheduler-role" {
-  name                = "scheduler-role"
+  name                = "pltfrm-scheduler-role"
   managed_policy_arns = [aws_iam_policy.scheduler_policy.arn]
 
   assume_role_policy = jsonencode({
