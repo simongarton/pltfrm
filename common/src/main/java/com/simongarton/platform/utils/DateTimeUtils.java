@@ -18,4 +18,8 @@ public class DateTimeUtils {
         final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH-mm-ss'Z'");
         return dateTimeFormatter.format(OffsetDateTime.now().withNano(0));
     }
+
+    public static String asOffsetDateTimeString(final OffsetDateTime timestamp) {
+        return DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(timestamp);
+    }
 }

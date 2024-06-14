@@ -6,6 +6,7 @@ import com.amazonaws.services.lambda.runtime.RequestHandler;
 import com.amazonaws.services.lambda.runtime.events.SQSEvent;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.simongarton.platform.factory.PltfrmCommonFactory;
+import com.simongarton.platform.service.PltfrmDynamoDBService;
 import com.simongarton.platform.service.PltfrmS3Service;
 import com.simongarton.pltfrm.weather.lambda.model.FileNotification;
 import com.simongarton.pltfrm.weather.lambda.model.SQSMessageBody;
@@ -24,8 +25,9 @@ public class WeatherLambdaSQSEventRequestHandler implements RequestHandler<SQSEv
 
     public WeatherLambdaSQSEventRequestHandler() {
         final PltfrmS3Service pltfrmS3Service = PltfrmCommonFactory.getPltfrmS3Service();
+        final PltfrmDynamoDBService pltfrmDynamoDBService = PltfrmCommonFactory.getPltfrmDynamoDBService();
         final WeatherTimestreamService weatherTimestreamService = new WeatherTimestreamService();
-        this.processor = new WeatherLambdaSQSEventProcessor(pltfrmS3Service, weatherTimestreamService);
+        this.processor = new WeatherLambdaSQSEventProcessor(pltfrmS3Service, pltfrmDynamoDBService, weatherTimestreamService);
         this.objectMapper = PltfrmCommonFactory.getObjectMapper();
     }
 

@@ -8,6 +8,9 @@ module "lambda" {
   application_key_arn     = module.kms.application_key_arn
   timestream_database_arn = module.timestream.database.arn
   weather_queue_arn       = module.sns_sqs.queue.arn
+
+  dynamodb_table_arns = module.dynamodb.dynamodb_table_arns
+
 }
 
 module "api_gateway" {

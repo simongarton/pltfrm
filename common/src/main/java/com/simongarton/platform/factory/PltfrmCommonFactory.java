@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import com.simongarton.platform.service.PltfrmDynamoDBService;
 import com.simongarton.platform.service.PltfrmS3Service;
 import com.simongarton.platform.service.PltfrmSNSService;
 import com.simongarton.platform.service.PltfrmSSMService;
@@ -58,5 +59,9 @@ public class PltfrmCommonFactory {
 
     public static PltfrmSNSService getPltfrmSNSService() {
         return new PltfrmSNSService();
+    }
+
+    public static PltfrmDynamoDBService getPltfrmDynamoDBService() {
+        return new PltfrmDynamoDBService();
     }
 }

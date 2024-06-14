@@ -1,4 +1,4 @@
-resource "aws_dynamodb_table" "this" {
+resource "aws_dynamodb_table" "pltfrm_weather_rain_table" {
   name         = "pltfrm_weather_rain_table"
   billing_mode = "PAY_PER_REQUEST"
   hash_key     = "Timestamp"

@@ -15,3 +15,5 @@ variable "application_key_arn" {}
 variable "timestream_database_arn" {}
 
 variable "weather_queue_arn" {}
+
+variable "dynamodb_table_arns" {}

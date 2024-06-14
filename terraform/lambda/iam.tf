@@ -142,6 +142,28 @@ resource "aws_iam_policy" "pltfrm_timestream_policy" {
   })
 }
 
+resource "aws_iam_policy" "pltfrm_dynamodb_policy" {
+  name = "pltfrm-dynamodb-policy"
+
+  policy = jsonencode({
+    Version   = "2012-10-17"
+    Statement = [
+      {
+        Effect = "Allow"
+        Action = [
+          "dynamodb:PutItem",
+          "dynamodb:GetItem",
+          "dynamodb:UpdateItem",
+          "dynamodb:DeleteItem",
+          "dynamodb:Query",
+          "dynamodb:Scan",
+        ]
+        Resource = var.dynamodb_table_arns
+      },
+    ]
+  })
+}
+
 resource "aws_iam_role_policy_attachment" "aws_lambda_basic_execution_attach" {
   role       = aws_iam_role.pltfrm_lambda_iam.name
   policy_arn = data.aws_iam_policy.aws_lambda_basic_execution_pltfrm_role.arn
@@ -180,4 +202,9 @@ resource "aws_iam_role_policy_attachment" "pltfrm_sqs_policy_attach" {
 resource "aws_iam_role_policy_attachment" "pltfrm_timestream_policy_attach" {
   role       = aws_iam_role.pltfrm_lambda_iam.name
   policy_arn = aws_iam_policy.pltfrm_timestream_policy.arn
+}
+
+resource "aws_iam_role_policy_attachment" "pltfrm_dynamodb_policy_attach" {
+  role       = aws_iam_role.pltfrm_lambda_iam.name
+  policy_arn = aws_iam_policy.pltfrm_dynamodb_policy.arn
 }
