@@ -45,3 +45,13 @@ module "sns_sqs" {
   topic_name         = "pltfrm-weather-file-topic"
   topic_name_for_ssm = "/pltfrm/weather-topic-arn"
 }
+
+module "timestream" {
+  source = "./timestream"
+
+  database_name = "pltfrm_weather"
+  table_names   = [
+    "pltfrm_weather_hour_table",
+    "pltfrm_weather_day_table"
+  ]
+}

@@ -1,10 +1,10 @@
 resource "aws_api_gateway_rest_api" "api" {
   name = "pltfrm-api"
+
   tags = {
-    Owner       = "simon.garton@gmail.com"
-    Project     = "pltfrm"
-    Name        = "pltfrm API"
-    Description = "Main API for pltfrm project"
+    Owner   = "simon.garton@gmail.com"
+    Project = "pltfrm"
+    Name    = "pltfrm API"
   }
 }
 

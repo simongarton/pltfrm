@@ -1,5 +1,11 @@
 resource "aws_sns_topic" "this" {
   name = var.topic_name
+
+  tags = {
+    Name    = var.topic_name
+    Owner   = "simon.garton@gmail.com"
+    Project = "pltform"
+  }
 }
 
 resource "aws_ssm_parameter" "this" {

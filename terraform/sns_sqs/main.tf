@@ -12,6 +12,12 @@ resource "aws_sns_topic" "this" {
     }]
 }
 POLICY
+
+  tags = {
+    Name    = var.topic_name
+    Owner   = "simon.garton@gmail.com"
+    Project = "pltform"
+  }
 }
 
 resource "aws_sqs_queue_policy" "conversion_policy" {
@@ -40,7 +46,14 @@ POLICY
 }
 
 resource "aws_sqs_queue" "this" {
+
   name = var.queue_name
+
+  tags = {
+    Name    = var.queue_name
+    Owner   = "simon.garton@gmail.com"
+    Project = "pltform"
+  }
 }
 
 resource "aws_sns_topic_subscription" "this" {

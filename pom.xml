@@ -95,6 +95,26 @@
             <artifactId>aws-java-sdk-ssm</artifactId>
             <version>${aws-version-1}</version>
         </dependency>
+        <dependency>
+            <groupId>software.amazon.awssdk</groupId>
+            <artifactId>timestreamwrite</artifactId>
+            <version>${aws-version-2}</version>
+        </dependency>
+        <dependency>
+            <groupId>software.amazon.awssdk</groupId>
+            <artifactId>timestreamquery</artifactId>
+            <version>${aws-version-2}</version>
+        </dependency>
+        <dependency>
+            <groupId>software.amazon.awssdk</groupId>
+            <artifactId>apache-client</artifactId>
+            <version>${aws-version-2}</version>
+        </dependency>
+        <dependency>
+            <groupId>software.amazon.awssdk</groupId>
+            <artifactId>dynamodb</artifactId>
+            <version>${aws-version-2}</version>
+        </dependency>
 
         <dependency>
             <groupId>org.apache.logging.log4j</groupId>
