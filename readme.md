@@ -11,7 +11,9 @@ This stage is a simple weather application, which uses the OpenWeatherMap API to
 location - where I live. It exposes APIs to call for current and forecasted weather, and also stores data in Timestream,
 AWS's time-series database, that allows me to (a) build up history, and also (b) see how forecasts can change over time.
 
-![Diagram](./documentation/images/pltfrm-wthr.png)
+![Part 1](./documentation/images/pltfrm-wthr-1.png)
+
+![Part 2](./documentation/images/pltfrm-wthr-2.png)
 
 Endpoints:
 
