@@ -2,8 +2,8 @@ package com.simongarton.pltfrm.weather.lambda.service;
 
 import com.simongarton.platform.service.PltfrmTimestreamService;
 import com.simongarton.platform.utils.DateTimeUtils;
-import com.simongarton.pltfrm.weather.lambda.model.Weather;
-import com.simongarton.pltfrm.weather.lambda.model.WeatherCurrentAndForecast;
+import com.simongarton.pltfrm.weather.lambda.model.openweathermap.Weather;
+import com.simongarton.pltfrm.weather.lambda.model.openweathermap.WeatherCurrentAndForecast;
 import software.amazon.awssdk.services.timestreamwrite.model.Dimension;
 import software.amazon.awssdk.services.timestreamwrite.model.MeasureValueType;
 import software.amazon.awssdk.services.timestreamwrite.model.Record;

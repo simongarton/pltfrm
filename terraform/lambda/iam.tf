@@ -157,6 +157,7 @@ resource "aws_iam_policy" "pltfrm_dynamodb_policy" {
           "dynamodb:DeleteItem",
           "dynamodb:Query",
           "dynamodb:Scan",
+          "dynamodb:DescribeTable",
         ]
         Resource = var.dynamodb_table_arns
       },

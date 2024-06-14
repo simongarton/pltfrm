@@ -8,6 +8,7 @@ import com.amazonaws.services.sns.AmazonSNS;
 import com.amazonaws.services.sns.AmazonSNSClientBuilder;
 import software.amazon.awssdk.core.client.config.ClientOverrideConfiguration;
 import software.amazon.awssdk.core.retry.RetryPolicy;
+import software.amazon.awssdk.enhanced.dynamodb.DynamoDbEnhancedClient;
 import software.amazon.awssdk.http.apache.ApacheHttpClient;
 import software.amazon.awssdk.regions.Region;
 import software.amazon.awssdk.services.cloudwatch.CloudWatchClient;
@@ -78,6 +79,12 @@ public class AWSFactory {
                 .httpClientBuilder(httpClientBuilder)
                 .overrideConfiguration(overrideConfig.build())
                 .region(region)
+                .build();
+    }
+
+    public static DynamoDbEnhancedClient getDynamoDBEnhancedClient(final DynamoDbClient dynamoDBClient) {
+        return DynamoDbEnhancedClient.builder()
+                .dynamoDbClient(dynamoDBClient)
                 .build();
     }
 }

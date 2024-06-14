@@ -10,10 +10,6 @@ public class DateTimeUtils {
         return OffsetDateTime.ofInstant(Instant.ofEpochSecond(epoch), OffsetDateTime.now().getOffset());
     }
 
-    public static OffsetDateTime offsetDateTimeNowToSeconds() {
-        return OffsetDateTime.now().withNano(0);
-    }
-
     public static String nowAsFileNameISOinUTC() {
         final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH-mm-ss'Z'");
         return dateTimeFormatter.format(OffsetDateTime.now().withNano(0));

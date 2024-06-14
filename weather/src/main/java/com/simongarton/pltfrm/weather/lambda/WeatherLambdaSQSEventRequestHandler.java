@@ -6,11 +6,12 @@ import com.amazonaws.services.lambda.runtime.RequestHandler;
 import com.amazonaws.services.lambda.runtime.events.SQSEvent;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.simongarton.platform.factory.PltfrmCommonFactory;
-import com.simongarton.platform.service.PltfrmDynamoDBService;
 import com.simongarton.platform.service.PltfrmS3Service;
 import com.simongarton.pltfrm.weather.lambda.model.FileNotification;
 import com.simongarton.pltfrm.weather.lambda.model.SQSMessageBody;
+import com.simongarton.pltfrm.weather.lambda.model.factory.WeatherServiceFactory;
 import com.simongarton.pltfrm.weather.lambda.processor.WeatherLambdaSQSEventProcessor;
+import com.simongarton.pltfrm.weather.lambda.service.WeatherDynamoDBService;
 import com.simongarton.pltfrm.weather.lambda.service.WeatherTimestreamService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,9 +26,9 @@ public class WeatherLambdaSQSEventRequestHandler implements RequestHandler<SQSEv
 
     public WeatherLambdaSQSEventRequestHandler() {
         final PltfrmS3Service pltfrmS3Service = PltfrmCommonFactory.getPltfrmS3Service();
-        final PltfrmDynamoDBService pltfrmDynamoDBService = PltfrmCommonFactory.getPltfrmDynamoDBService();
-        final WeatherTimestreamService weatherTimestreamService = new WeatherTimestreamService();
-        this.processor = new WeatherLambdaSQSEventProcessor(pltfrmS3Service, pltfrmDynamoDBService, weatherTimestreamService);
+        final WeatherDynamoDBService weatherDynamoDBService = WeatherServiceFactory.getWeatherDynamoDBService();
+        final WeatherTimestreamService weatherTimestreamService = WeatherServiceFactory.getWeatherTimestreamService();
+        this.processor = new WeatherLambdaSQSEventProcessor(pltfrmS3Service, weatherDynamoDBService, weatherTimestreamService);
         this.objectMapper = PltfrmCommonFactory.getObjectMapper();
     }
 
@@ -49,7 +50,7 @@ public class WeatherLambdaSQSEventRequestHandler implements RequestHandler<SQSEv
 
         } catch (final Exception e) {
 
-            LOG.error(e.getMessage());
+            LOG.error(e.getMessage(), e);
             return e.getMessage();
         }
     }

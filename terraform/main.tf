@@ -57,9 +57,9 @@ module "sns_sqs" {
 module "timestream" {
   source = "./timestream"
 
-  database_name = "pltfrm_weather"
+  database_name = "pltfrm-weather"
   table_names   = [
-    "pltfrm_weather_day_table"
+    "pltfrm-weather-day-table"
   ]
 
   database_name_for_ssm = "/pltfrm/weather-timestream-database-name"

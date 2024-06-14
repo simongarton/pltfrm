@@ -8,7 +8,7 @@ import com.simongarton.platform.service.PltfrmSNSService;
 import com.simongarton.platform.service.PltfrmSSMService;
 import com.simongarton.platform.utils.DateTimeUtils;
 import com.simongarton.pltfrm.weather.lambda.model.FileNotification;
-import com.simongarton.pltfrm.weather.lambda.model.WeatherCurrentAndForecast;
+import com.simongarton.pltfrm.weather.lambda.model.openweathermap.WeatherCurrentAndForecast;
 
 import java.io.IOException;
 import java.net.URISyntaxException;

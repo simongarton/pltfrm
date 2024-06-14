@@ -1,4 +1,4 @@
-package com.simongarton.pltfrm.weather.lambda.model;
+package com.simongarton.pltfrm.weather.lambda.model.openweathermap;
 
 import lombok.Data;
 

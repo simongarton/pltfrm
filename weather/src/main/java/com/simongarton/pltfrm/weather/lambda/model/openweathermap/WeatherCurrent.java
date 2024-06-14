@@ -1,4 +1,4 @@
-package com.simongarton.pltfrm.weather.lambda.model;
+package com.simongarton.pltfrm.weather.lambda.model.openweathermap;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
@@ -7,9 +7,11 @@ import java.util.List;
 import java.util.Map;
 
 @Data
-public class WeatherHour {
+public class WeatherCurrent {
 
     private long dt;
+    private long sunrise;
+    private long sunset;
     private double temp;
     @JsonProperty("feels_like")
     private double feelsLike;
@@ -27,6 +29,5 @@ public class WeatherHour {
     @JsonProperty("wind_gust")
     private double windGust;
     private List<Weather> weather;
-    private double pop;
     private Map<String, Double> rain;
 }

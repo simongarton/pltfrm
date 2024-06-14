@@ -1,6 +1,6 @@
 package com.simongarton.pltfrm.weather.lambda.processor;
 
-import com.simongarton.pltfrm.weather.lambda.model.WeatherCurrentAndForecast;
+import com.simongarton.pltfrm.weather.lambda.model.openweathermap.WeatherCurrentAndForecast;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

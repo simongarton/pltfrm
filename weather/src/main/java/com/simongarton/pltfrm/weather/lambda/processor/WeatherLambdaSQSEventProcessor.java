@@ -2,51 +2,62 @@ package com.simongarton.pltfrm.weather.lambda.processor;
 
 
 import com.simongarton.platform.factory.PltfrmCommonFactory;
-import com.simongarton.platform.service.PltfrmDynamoDBService;
 import com.simongarton.platform.service.PltfrmS3Service;
 import com.simongarton.platform.service.PltfrmSSMService;
+import com.simongarton.platform.service.PltfrmTimestreamService;
 import com.simongarton.platform.utils.DateTimeUtils;
 import com.simongarton.pltfrm.weather.lambda.model.FileNotification;
-import com.simongarton.pltfrm.weather.lambda.model.Weather;
-import com.simongarton.pltfrm.weather.lambda.model.WeatherCurrentAndForecast;
-import com.simongarton.pltfrm.weather.lambda.model.WeatherMinute;
+import com.simongarton.pltfrm.weather.lambda.model.openweathermap.Weather;
+import com.simongarton.pltfrm.weather.lambda.model.openweathermap.WeatherCurrentAndForecast;
+import com.simongarton.pltfrm.weather.lambda.model.openweathermap.WeatherMinute;
+import com.simongarton.pltfrm.weather.lambda.service.WeatherDynamoDBService;
 import com.simongarton.pltfrm.weather.lambda.service.WeatherTimestreamService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
 
 public class WeatherLambdaSQSEventProcessor {
 
+    private static final Logger LOG = LoggerFactory.getLogger(PltfrmTimestreamService.class);
+
     private static final String WEATHER_BUCKET_NAME = "/pltfrm/weather-bucket-name";
     private static final String WEATHER_DATABASE_NAME = "/pltfrm/weather-timestream-database-name";
 
     private final PltfrmS3Service s3Service;
-    private final PltfrmDynamoDBService pltfrmDynamoDBService;
+    private final WeatherDynamoDBService weatherDynamoDBService;
     private final WeatherTimestreamService weatherTimestreamService;
 
     private final String bucketName;
     private final String databaseName;
     private final String timestreamTableName;
-    private final String dynamoRainTableName;
+    private final String dynamoLogTableName;
+    private final String dynamoWeatherTableName;
+    private final String dynamoForecastHourTableName;
+    private final String dynamoForecastDayTableName;
 
     public WeatherLambdaSQSEventProcessor(
             final PltfrmS3Service s3Service,
-            final PltfrmDynamoDBService pltfrmDynamoDBService,
+            final WeatherDynamoDBService weatherDynamoDBService,
             final WeatherTimestreamService weatherTimestreamService) {
         this.s3Service = s3Service;
-        this.pltfrmDynamoDBService = pltfrmDynamoDBService;
+        this.weatherDynamoDBService = weatherDynamoDBService;
         this.weatherTimestreamService = weatherTimestreamService;
 
         final PltfrmSSMService pltfrmSSMService = PltfrmCommonFactory.getPltfrmSSMService();
         this.bucketName = pltfrmSSMService.getParameterValue(WEATHER_BUCKET_NAME);
         this.databaseName = pltfrmSSMService.getParameterValue(WEATHER_DATABASE_NAME);
-        this.timestreamTableName = "pltfrm_weather_day_table";
-        this.dynamoRainTableName = "pltfrm_weather_rain_table";
+        this.timestreamTableName = "pltfrm-weather-day-table";
+        this.dynamoLogTableName = WeatherDynamoDBService.PLATFORM_WEATHER_LOG_TABLE;
+        this.dynamoWeatherTableName = WeatherDynamoDBService.PLATFORM_WEATHER_WEATHER_TABLE;
+        this.dynamoForecastHourTableName = WeatherDynamoDBService.PLATFORM_WEATHER_FORECAST_HOUR_TABLE;
+        this.dynamoForecastDayTableName = WeatherDynamoDBService.PLATFORM_WEATHER_FORECAST_DAY_TABLE;
     }
-
 
     public void processFile(final FileNotification fileNotification) throws IOException {
 
@@ -57,12 +68,56 @@ public class WeatherLambdaSQSEventProcessor {
                         WeatherCurrentAndForecast.class);
         this.weatherTimestreamService.saveData(weatherCurrentAndForecast, this.databaseName, this.timestreamTableName);
 
-        this.writeCurrentWeatherToDynamoDB(weatherCurrentAndForecast);
+        this.handleWritesToDynamoDB(weatherCurrentAndForecast);
     }
 
-    private void writeCurrentWeatherToDynamoDB(final WeatherCurrentAndForecast weatherCurrentAndForecast) {
+    private void handleWritesToDynamoDB(final WeatherCurrentAndForecast weatherCurrentAndForecast) {
+        final String currentHour = DateTimeUtils.asOffsetDateTimeString(OffsetDateTime.now().truncatedTo(ChronoUnit.HOURS));
+        final String currentDay = DateTimeUtils.asOffsetDateTimeString(OffsetDateTime.now().truncatedTo(ChronoUnit.DAYS));
 
-        final String key = DateTimeUtils.asOffsetDateTimeString(OffsetDateTime.now());
+        if (!this.updateDone(currentHour, this.dynamoWeatherTableName)) {
+            this.writeCurrentWeatherToDynamoDB(weatherCurrentAndForecast, currentHour);
+            LOG.info("Wrote current weather to DynamoDB");
+        }
+        if (!this.updateDone(currentHour, this.dynamoForecastHourTableName)) {
+            this.writeForecastHourToDynamoDB(weatherCurrentAndForecast, currentHour);
+            LOG.info("Wrote forecast hour to DynamoDB");
+        }
+        if (!this.updateDone(currentDay, this.dynamoForecastDayTableName)) {
+            this.writeForecastDayToDynamoDB(weatherCurrentAndForecast, currentHour);
+            LOG.info("Wrote forecast day to DynamoDB");
+        }
+    }
+
+    private void writeForecastDayToDynamoDB(final WeatherCurrentAndForecast weatherCurrentAndForecast, final String currentHour) {
+
+    }
+
+    private void writeForecastHourToDynamoDB(final WeatherCurrentAndForecast weatherCurrentAndForecast, final String currentHour) {
+
+    }
+
+    private boolean updateDone(final String timestamp, final String key) {
+        final String log = this.weatherDynamoDBService.getLog(key);
+        if (log != null && log.equals(timestamp)) {
+            LOG.info("Found same timestamp {} for {}", timestamp, key);
+            return true;
+        }
+        if (log != null) {
+            LOG.info("Found different timestamp {} for {}", log, key);
+        } else {
+            LOG.info("Found no timestamp or {}", key);
+        }
+        return false;
+    }
+
+    private void doUpdate(final String timestamp, final String key) {
+        this.weatherDynamoDBService.setLog(key, timestamp);
+        LOG.info("Updated timestamp {} for {}", timestamp, key);
+    }
+
+    private void writeCurrentWeatherToDynamoDB(final WeatherCurrentAndForecast weatherCurrentAndForecast, final String key) {
+
         final Map<String, String> values = new HashMap<>();
         for (final WeatherMinute weatherMinute : weatherCurrentAndForecast.getMinuteList()) {
             values.put(DateTimeUtils.asOffsetDateTimeString(
@@ -87,8 +142,11 @@ public class WeatherLambdaSQSEventProcessor {
         item.put("WindGust", String.format("%.2f", weatherCurrentAndForecast.getCurrent().getWindGust()));
         item.put("Weather", weather);
         item.put("Rain", values);
-        this.pltfrmDynamoDBService.putItem(
+        this.weatherDynamoDBService.putItem(
                 item,
-                this.dynamoRainTableName);
+                this.dynamoWeatherTableName)
+        ;
+
+        this.doUpdate(key, this.dynamoWeatherTableName);
     }
 }

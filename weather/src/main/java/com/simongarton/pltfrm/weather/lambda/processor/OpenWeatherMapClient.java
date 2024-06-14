@@ -4,7 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.simongarton.platform.exception.InternalServerErrorException;
 import com.simongarton.platform.factory.PltfrmCommonFactory;
 import com.simongarton.platform.utils.DateTimeUtils;
-import com.simongarton.pltfrm.weather.lambda.model.*;
+import com.simongarton.pltfrm.weather.lambda.model.openweathermap.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -14,6 +14,8 @@ import java.net.URISyntaxException;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.time.OffsetDateTime;
+import java.time.temporal.ChronoUnit;
 
 public class OpenWeatherMapClient {
 
@@ -78,7 +80,7 @@ public class OpenWeatherMapClient {
     public void debugWeatherDates() {
         try {
             final WeatherCurrentAndForecast weatherCurrentAndForecast = this.getWeatherDetailsFromAPI();
-            LOG.info("Current time : {}", DateTimeUtils.offsetDateTimeNowToSeconds());
+            LOG.info("Current time : {}", OffsetDateTime.now().truncatedTo(ChronoUnit.SECONDS));
             final WeatherCurrent weatherCurrent = weatherCurrentAndForecast.getCurrent();
             LOG.info("Current Weather date : {}", DateTimeUtils.longToOffsetDateTime(weatherCurrent.getDt()));
             LOG.info("Minute Weather dates :");

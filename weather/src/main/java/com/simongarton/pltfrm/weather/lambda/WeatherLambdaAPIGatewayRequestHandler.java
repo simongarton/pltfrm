@@ -58,8 +58,7 @@ public class WeatherLambdaAPIGatewayRequestHandler implements RequestHandler<API
 
         } catch (final Exception e) {
 
-            LOG.error(e.getMessage());
-
+            LOG.error(e.getMessage(), e);
             return this.lambdaRequestHandlerFactory.standardResponse(APIStatusCode.INTERNAL_SERVER_ERROR,
                     this.getClass().getSimpleName(),
                     method,

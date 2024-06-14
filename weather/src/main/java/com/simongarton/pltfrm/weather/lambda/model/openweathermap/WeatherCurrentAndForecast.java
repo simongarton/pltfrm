@@ -1,4 +1,4 @@
-package com.simongarton.pltfrm.weather.lambda.model;
+package com.simongarton.pltfrm.weather.lambda.model.openweathermap;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;

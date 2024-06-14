@@ -52,7 +52,7 @@ public class WeatherLambdaEventBridgeRequestHandler implements RequestHandler<Sc
 
         } catch (final Exception e) {
 
-            LOG.error(e.getMessage());
+            LOG.error(e.getMessage(), e);
             return e.getMessage();
         }
     }

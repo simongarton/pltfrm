@@ -1,29 +1,25 @@
 package com.simongarton.platform.service;
 
 import com.simongarton.platform.factory.AWSFactory;
-import com.simongarton.platform.factory.PltfrmCommonFactory;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import software.amazon.awssdk.enhanced.dynamodb.DynamoDbEnhancedClient;
 import software.amazon.awssdk.services.dynamodb.DynamoDbClient;
 import software.amazon.awssdk.services.dynamodb.model.AttributeValue;
 import software.amazon.awssdk.services.dynamodb.model.GetItemRequest;
 import software.amazon.awssdk.services.dynamodb.model.GetItemResponse;
 import software.amazon.awssdk.services.dynamodb.model.PutItemRequest;
 
-import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.Map;
 
 public class PltfrmDynamoDBService {
 
-    private static final Logger LOG = LoggerFactory.getLogger(PltfrmDynamoDBService.class);
 
-    private final DynamoDbClient dynamoDBClient;
-    private final DateTimeFormatter dateTimeFormatter;
+    protected final DynamoDbClient dynamoDBClient;
+    protected final DynamoDbEnhancedClient dynamoDbEnhancedClient;
 
     public PltfrmDynamoDBService() {
         this.dynamoDBClient = AWSFactory.getDynamoDBClient();
-        this.dateTimeFormatter = PltfrmCommonFactory.getDateTimeFormatter();
+        this.dynamoDbEnhancedClient = AWSFactory.getDynamoDBEnhancedClient(this.dynamoDBClient);
     }
 
     public void putItem(final Map<String, Object> itemMap, final String tableName) {
