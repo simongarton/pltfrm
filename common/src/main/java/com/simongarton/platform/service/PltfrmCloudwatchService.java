@@ -1,8 +1,8 @@
 package com.simongarton.platform.service;
 
+import com.simongarton.platform.factory.AWSFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import software.amazon.awssdk.regions.Region;
 import software.amazon.awssdk.services.cloudwatch.CloudWatchClient;
 import software.amazon.awssdk.services.cloudwatch.model.*;
 
@@ -12,7 +12,7 @@ import java.util.List;
 public class PltfrmCloudwatchService {
 
     public static final String API = "API";
-    
+
     private static final String SOURCE = "source";
     private static final String METHOD = "method";
     private static final String OUTCOME = "outcome";
@@ -28,10 +28,7 @@ public class PltfrmCloudwatchService {
     private static final Logger LOG = LoggerFactory.getLogger(PltfrmCloudwatchService.class.getSimpleName());
 
     public PltfrmCloudwatchService() {
-        final Region region = Region.AP_SOUTHEAST_2;
-        this.cloudWatch = CloudWatchClient.builder()
-                .region(region)
-                .build();
+        this.cloudWatch = AWSFactory.getCloudWatchClient();
         LOG.info("Built CloudWatchService");
     }
 

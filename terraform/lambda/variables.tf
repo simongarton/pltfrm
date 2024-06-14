@@ -11,3 +11,7 @@ variable "openweathermap-url" {}
 variable "openweathermap-api-key" {}
 
 variable "application_key_arn" {}
+
+variable "timestream_database_arn" {}
+
+variable "weather_queue_arn" {}

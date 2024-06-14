@@ -1,9 +1,9 @@
 package com.simongarton.platform.service;
 
 import com.amazonaws.services.s3.AmazonS3;
-import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 import com.amazonaws.services.s3.model.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.simongarton.platform.factory.AWSFactory;
 import com.simongarton.platform.factory.PltfrmCommonFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,15 +25,29 @@ public class PltfrmS3Service {
     private final DateTimeFormatter dateTimeFormatter;
 
     public PltfrmS3Service() {
-        this.s3Client = this.getS3Client();
+        this.s3Client = AWSFactory.getS3Client();
         this.objectMapper = PltfrmCommonFactory.getObjectMapper();
         this.dateTimeFormatter = PltfrmCommonFactory.getDateFormatter();
     }
 
-    private AmazonS3 getS3Client() {
-        return AmazonS3ClientBuilder
-                .standard()
-                .build();
+    public Object load(
+            final String key,
+            final String bucketName,
+            final Class clazz) throws IOException {
+        final GetObjectRequest getObjectRequest = new GetObjectRequest(
+                bucketName,
+                key);
+        final S3Object s3Object = this.s3Client.getObject(getObjectRequest);
+        LOG.info("read " + key + " from " + bucketName);
+        final S3ObjectInputStream inputStream = s3Object.getObjectContent();
+        try {
+            final Object object = this.objectMapper.readValue(inputStream, clazz);
+            LOG.info("loaded " + object.toString());
+            return object;
+        } catch (final IOException e) {
+            LOG.error(e.getMessage(), e);
+            throw e;
+        }
     }
 
     public void save(final Object object,

@@ -55,3 +55,15 @@ resource "aws_s3_bucket_server_side_encryption_configuration" "example" {
     bucket_key_enabled = true
   }
 }
+
+resource "aws_ssm_parameter" "this" {
+  name  = var.bucket_name_for_ssm
+  type  = "String"
+  value = aws_s3_bucket.this.bucket
+
+  tags = {
+    Name    = var.bucket_name_for_ssm
+    Owner   = "simon.garton@gmail.com"
+    Project = "pltfrm"
+  }
+}

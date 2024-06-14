@@ -5,7 +5,9 @@ module "lambda" {
   openweathermap-api-key = "SECRET"
   openweathermap-url     = "https://api.openweathermap.org/data/3.0/onecall"
 
-  application_key_arn = module.kms.application_key_arn
+  application_key_arn     = module.kms.application_key_arn
+  timestream_database_arn = module.timestream.database.arn
+  weather_queue_arn       = module.sns_sqs.queue.arn
 }
 
 module "api_gateway" {
@@ -36,6 +38,9 @@ module "s3" {
 
   bucket_name        = "pltfrm-weather-file"
   application_key_id = module.kms.application_key_id
+
+
+  bucket_name_for_ssm = "/pltfrm/weather-bucket-name"
 }
 
 module "sns_sqs" {
@@ -51,7 +56,14 @@ module "timestream" {
 
   database_name = "pltfrm_weather"
   table_names   = [
-    "pltfrm_weather_hour_table",
     "pltfrm_weather_day_table"
   ]
+
+  database_name_for_ssm = "/pltfrm/weather-timestream-database-name"
+}
+
+module "dynamodb" {
+
+  source = "./dynamodb"
+
 }

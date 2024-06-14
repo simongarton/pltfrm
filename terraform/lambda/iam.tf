@@ -95,6 +95,53 @@ resource "aws_iam_policy" "pltfrm_sns_policy" {
   })
 }
 
+resource "aws_iam_policy" "pltfrm_sqs_policy" {
+  name = "pltfrm-sqs-policy"
+
+  policy = jsonencode({
+    Version   = "2012-10-17"
+    Statement = [
+      {
+        Effect = "Allow"
+        Action = [
+          "sqs:SendMessage",
+          "sqs:ReceiveMessage",
+          "sqs:DeleteMessage",
+          "sqs:GetQueueAttributes"
+        ]
+        Resource = "*"
+      },
+    ]
+  })
+}
+
+resource "aws_iam_policy" "pltfrm_timestream_policy" {
+  name = "pltfrm-timestream-policy"
+
+  policy = jsonencode({
+    Version   = "2012-10-17"
+    Statement = [
+      {
+        Effect = "Allow"
+        Action = [
+          "timestream:WriteRecords",
+          "timestream:Select"
+        ]
+        Resource = var.timestream_database_arn
+      },
+      {
+        "Effect" : "Allow",
+        "Action" : [
+          "timestream:DescribeEndpoints",
+          "timestream:DescribeDatabase",
+          "timestream:DescribeTable",
+        ],
+        "Resource" : "*"
+      }
+    ]
+  })
+}
+
 resource "aws_iam_role_policy_attachment" "aws_lambda_basic_execution_attach" {
   role       = aws_iam_role.pltfrm_lambda_iam.name
   policy_arn = data.aws_iam_policy.aws_lambda_basic_execution_pltfrm_role.arn
@@ -123,4 +170,14 @@ resource "aws_iam_role_policy_attachment" "pltfrm_s3_policy_attach" {
 resource "aws_iam_role_policy_attachment" "pltfrm_sns_policy_attach" {
   role       = aws_iam_role.pltfrm_lambda_iam.name
   policy_arn = aws_iam_policy.pltfrm_sns_policy.arn
+}
+
+resource "aws_iam_role_policy_attachment" "pltfrm_sqs_policy_attach" {
+  role       = aws_iam_role.pltfrm_lambda_iam.name
+  policy_arn = aws_iam_policy.pltfrm_sqs_policy.arn
+}
+
+resource "aws_iam_role_policy_attachment" "pltfrm_timestream_policy_attach" {
+  role       = aws_iam_role.pltfrm_lambda_iam.name
+  policy_arn = aws_iam_policy.pltfrm_timestream_policy.arn
 }

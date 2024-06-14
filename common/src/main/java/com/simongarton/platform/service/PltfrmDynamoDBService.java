@@ -1,5 +1,6 @@
 package com.simongarton.platform.service;
 
+import com.simongarton.platform.factory.AWSFactory;
 import com.simongarton.platform.factory.PltfrmCommonFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,7 +16,7 @@ public class PltfrmDynamoDBService {
     private final DateTimeFormatter dateTimeFormatter;
 
     public PltfrmDynamoDBService() {
-        this.dynamoDBClient = DynamoDbClient.builder().build();
+        this.dynamoDBClient = AWSFactory.getDynamoDBClient();
         this.dateTimeFormatter = PltfrmCommonFactory.getDateTimeFormatter();
     }
 

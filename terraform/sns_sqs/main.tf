@@ -1,4 +1,5 @@
 resource "aws_sns_topic" "this" {
+
   name = var.topic_name
 
   policy = <<POLICY
@@ -21,6 +22,7 @@ POLICY
 }
 
 resource "aws_sqs_queue_policy" "conversion_policy" {
+
   queue_url = aws_sqs_queue.this.url
 
   policy = <<POLICY
@@ -47,7 +49,13 @@ POLICY
 
 resource "aws_sqs_queue" "this" {
 
-  name = var.queue_name
+  name                       = var.queue_name
+  visibility_timeout_seconds = 120
+
+  redrive_policy = jsonencode({
+    deadLetterTargetArn = aws_sqs_queue.this-dlq.arn
+    maxReceiveCount     = 4
+  })
 
   tags = {
     Name    = var.queue_name
@@ -70,6 +78,22 @@ resource "aws_ssm_parameter" "this" {
 
   tags = {
     Name    = var.topic_name_for_ssm
+    Owner   = "simon.garton@gmail.com"
+    Project = "pltfrm"
+  }
+}
+
+resource "aws_sqs_queue" "this-dlq" {
+
+  name                       = "${var.queue_name}-dlq"
+  delay_seconds              = 0
+  max_message_size           = 262144
+  message_retention_seconds  = 86400
+  receive_wait_time_seconds  = 0
+  visibility_timeout_seconds = 300
+
+  tags = {
+    Name    = "${var.queue_name}-dlq"
     Owner   = "simon.garton@gmail.com"
     Project = "pltfrm"
   }

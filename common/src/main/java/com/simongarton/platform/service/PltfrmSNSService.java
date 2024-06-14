@@ -1,9 +1,9 @@
 package com.simongarton.platform.service;
 
 import com.amazonaws.services.sns.AmazonSNS;
-import com.amazonaws.services.sns.AmazonSNSClientBuilder;
 import com.amazonaws.services.sns.model.PublishRequest;
 import com.amazonaws.services.sns.model.PublishResult;
+import com.simongarton.platform.factory.AWSFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -14,9 +14,7 @@ public class PltfrmSNSService {
     private final AmazonSNS client;
 
     public PltfrmSNSService() {
-        this.client = AmazonSNSClientBuilder
-                .standard()
-                .build();
+        this.client = AWSFactory.getSNSClient();
     }
 
     public String publish(final String message, final String topicArn) {

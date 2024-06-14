@@ -19,8 +19,8 @@ public class OpenWeatherMapClient {
 
     private static final Logger LOG = LoggerFactory.getLogger(OpenWeatherMapClient.class);
 
-    private static final String OVERVIEW_PATH = "/overview?lat=-36.848461&lon=174.763336";
-    private static final String DETAILS_PATH = "?lat=-36.848461&lon=174.763336";
+    private static final String OVERVIEW_PATH = "/overview?lat=-36.848461&lon=174.763336&units=metric";
+    private static final String DETAILS_PATH = "?lat=-36.848461&lon=174.763336&units=metric";
 
     private static final String X_API_KEY = "x-api-key";
 

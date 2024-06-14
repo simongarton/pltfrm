@@ -36,6 +36,10 @@ public class PltfrmCommonFactory {
         return DateTimeFormatter.ISO_DATE_TIME;
     }
 
+    public static DateTimeFormatter getOffsetDateTimeFormatter() {
+        return DateTimeFormatter.ISO_OFFSET_DATE_TIME;
+    }
+
     public static DateTimeFormatter getDateFormatter() {
         return DateTimeFormatter.ISO_DATE;
     }

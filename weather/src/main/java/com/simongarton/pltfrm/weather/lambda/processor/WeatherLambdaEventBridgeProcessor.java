@@ -15,9 +15,8 @@ import java.net.URISyntaxException;
 
 public class WeatherLambdaEventBridgeProcessor {
 
-    private static final String BUCKET_NAME = "pltfrm-weather-file";
-
     private static final String WEATHER_TOPIC_ARN = "/pltfrm/weather-topic-arn";
+    private static final String WEATHER_BUCKET_NAME = "/pltfrm/weather-bucket-name";
 
     private final ObjectMapper objectMapper;
     private final PltfrmS3Service s3Service;
@@ -25,6 +24,7 @@ public class WeatherLambdaEventBridgeProcessor {
     private final OpenWeatherMapClient openWeatherMapClient;
 
     private final String topicArn;
+    private final String bucketName;
 
     public WeatherLambdaEventBridgeProcessor(
             final PltfrmSNSService snsService,
@@ -38,6 +38,7 @@ public class WeatherLambdaEventBridgeProcessor {
 
         final PltfrmSSMService pltfrmSSMService = PltfrmCommonFactory.getPltfrmSSMService();
         this.topicArn = pltfrmSSMService.getParameterValue(WEATHER_TOPIC_ARN);
+        this.bucketName = pltfrmSSMService.getParameterValue(WEATHER_BUCKET_NAME);
     }
 
     public void downloadWeatherData() throws URISyntaxException, IOException, InterruptedException {
@@ -46,9 +47,9 @@ public class WeatherLambdaEventBridgeProcessor {
         final WeatherCurrentAndForecast weatherCurrentAndForecast = this.openWeatherMapClient.getWeatherDetailsFromAPI();
         this.s3Service.save(weatherCurrentAndForecast,
                 filename,
-                BUCKET_NAME);
+                this.bucketName);
         final FileNotification fileNotification = FileNotification.builder()
-                .bucket(BUCKET_NAME)
+                .bucket(this.bucketName)
                 .key(filename)
                 .build();
         this.snsService.publish(this.objectMapper.writeValueAsString(fileNotification), this.topicArn);

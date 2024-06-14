@@ -8,7 +8,6 @@ resource "aws_timestreamwrite_database" "this" {
   }
 }
 
-
 resource "aws_timestreamwrite_table" "readings-table" {
 
   for_each      = toset(var.table_names)
@@ -26,3 +25,16 @@ resource "aws_timestreamwrite_table" "readings-table" {
     Project = "pltform"
   }
 }
+
+resource "aws_ssm_parameter" "this" {
+  name  = var.database_name_for_ssm
+  type  = "String"
+  value = aws_timestreamwrite_database.this.database_name
+
+  tags = {
+    Name    = var.database_name_for_ssm
+    Owner   = "simon.garton@gmail.com"
+    Project = "pltfrm"
+  }
+}
+
