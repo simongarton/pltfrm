@@ -99,7 +99,7 @@ public class WeatherLambdaSQSEventProcessor {
 
         this.weatherDynamoDBService.putDayForecast(dayForecast);
 
-        this.doUpdate(currentDay, this.dynamoWeatherTableName);
+        this.doUpdate(currentDay, this.dynamoForecastDayTableName);
     }
 
     private void writeForecastHourToDynamoDB(final WeatherCurrentAndForecast weatherCurrentAndForecast, final String currentHour) {
@@ -111,7 +111,7 @@ public class WeatherLambdaSQSEventProcessor {
 
         this.weatherDynamoDBService.putHourForecast(hourForecast);
 
-        this.doUpdate(currentHour, this.dynamoWeatherTableName);
+        this.doUpdate(currentHour, this.dynamoForecastHourTableName);
     }
 
     private boolean updateDone(final String timestamp, final String key) {
@@ -145,6 +145,8 @@ public class WeatherLambdaSQSEventProcessor {
         final String weather = weatherCurrentAndForecast.getCurrent().getWeather().stream().map(Weather::getMain).collect(Collectors.joining(","));
 
         final Map<String, Object> item = new HashMap<>();
+        // this is deliberately lowercase to match the enhanced dynamoDB mapper : which is opinionated and expects lowercase.
+        // I could either rename the Java fields to be "Timestamp", or there is probably an annotation I could use.
         item.put("timestamp", key);
         item.put("Temperature", String.format("%.2f", weatherCurrentAndForecast.getCurrent().getTemp()));
         item.put("FeelsLike", String.format("%.2f", weatherCurrentAndForecast.getCurrent().getFeelsLike()));

@@ -10,6 +10,7 @@ import software.amazon.awssdk.enhanced.dynamodb.Key;
 import software.amazon.awssdk.enhanced.dynamodb.TableSchema;
 
 import java.time.OffsetDateTime;
+import java.time.temporal.ChronoUnit;
 
 public class WeatherDynamoDBService extends PltfrmDynamoDBService {
 
@@ -65,13 +66,13 @@ public class WeatherDynamoDBService extends PltfrmDynamoDBService {
         final PltfrmWeatherLog pltfrmWeatherLog = this.logTable.getItem(Key.builder().partitionValue(tableName).build());
         if (pltfrmWeatherLog != null) {
             pltfrmWeatherLog.setTimestamp(timestamp);
-            pltfrmWeatherLog.setActualTime(DateTimeUtils.asOffsetDateTimeString(OffsetDateTime.now()));
+            pltfrmWeatherLog.setActualTime(DateTimeUtils.asOffsetDateTimeString(OffsetDateTime.now().truncatedTo(ChronoUnit.SECONDS)));
             this.logTable.putItem(pltfrmWeatherLog);
         } else {
             final PltfrmWeatherLog newPltfrmWeatherLog = new PltfrmWeatherLog();
             newPltfrmWeatherLog.setId(tableName);
             newPltfrmWeatherLog.setTimestamp(timestamp);
-            newPltfrmWeatherLog.setActualTime(DateTimeUtils.asOffsetDateTimeString(OffsetDateTime.now()));
+            newPltfrmWeatherLog.setActualTime(DateTimeUtils.asOffsetDateTimeString(OffsetDateTime.now().truncatedTo(ChronoUnit.SECONDS)));
             this.logTable.putItem(newPltfrmWeatherLog);
         }
     }
