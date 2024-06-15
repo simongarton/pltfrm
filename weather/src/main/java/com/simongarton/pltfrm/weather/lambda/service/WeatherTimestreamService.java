@@ -25,23 +25,34 @@ public class WeatherTimestreamService extends PltfrmTimestreamService {
 
         final List<Record> records = new ArrayList<>();
 
-        final OffsetDateTime midnight = DateTimeUtils.longToOffsetDateTime(weatherCurrentAndForecast.getCurrent().getDt())
-                .truncatedTo(ChronoUnit.DAYS)
-                .plusDays(1);
-        final OffsetDateTime currentHour = OffsetDateTime.now()
-                .truncatedTo(ChronoUnit.HOURS);
+        final OffsetDateTime midnightEndOfDay = DateTimeUtils.inPacificAuckland(
+                DateTimeUtils.longToOffsetDateTime(weatherCurrentAndForecast.getCurrent().getDt())
+                        .truncatedTo(ChronoUnit.DAYS)
+                        .plusDays(1));
+        final OffsetDateTime currentHour = DateTimeUtils.inPacificAuckland(
+                OffsetDateTime.now()
+                        .truncatedTo(ChronoUnit.HOURS));
+        final OffsetDateTime timestamp = DateTimeUtils.inPacificAuckland(
+                OffsetDateTime.now());
 
         final String weather = weatherCurrentAndForecast.getCurrent().getWeather().stream().map(Weather::getMain).collect(Collectors.joining(","));
 
         final Dimension latitudeDimension = Dimension.builder().name("latitude").value(String.valueOf(weatherCurrentAndForecast.getLat())).build();
         final Dimension longitudeDimension = Dimension.builder().name("longitude").value(String.valueOf(weatherCurrentAndForecast.getLon())).build();
         final Dimension timezoneDimension = Dimension.builder().name("timezone").value(String.valueOf(weatherCurrentAndForecast.getTimezone())).build();
-        final Dimension midnightDimension = Dimension.builder().name("midnight").value(this.dateTimeFormatter.format(midnight)).build();
+        final Dimension midnightDimension = Dimension.builder().name("midnight").value(this.dateTimeFormatter.format(midnightEndOfDay)).build();
         final Dimension hourDimension = Dimension.builder().name("hour").value(this.dateTimeFormatter.format(currentHour)).build();
+        final Dimension timestampDimension = Dimension.builder().name("timestamp").value(this.dateTimeFormatter.format(timestamp)).build();
         final Dimension weatherDimension = Dimension.builder().name("weather").value(weather).build();
 
         final Record commonAttributes = Record.builder()
-                .dimensions(List.of(latitudeDimension, longitudeDimension, timezoneDimension, midnightDimension, hourDimension, weatherDimension))
+                .dimensions(List.of(latitudeDimension,
+                        longitudeDimension,
+                        timezoneDimension,
+                        midnightDimension,
+                        hourDimension,
+                        timestampDimension,
+                        weatherDimension))
                 .measureValueType(MeasureValueType.DOUBLE)
                 .version(System.currentTimeMillis())
                 .build();
