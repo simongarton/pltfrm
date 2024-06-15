@@ -2,6 +2,8 @@ package com.simongarton.pltfrm.weather.lambda.service;
 
 import com.simongarton.platform.service.PltfrmDynamoDBService;
 import com.simongarton.platform.utils.DateTimeUtils;
+import com.simongarton.pltfrm.weather.lambda.model.pltfrmweather.DayForecast;
+import com.simongarton.pltfrm.weather.lambda.model.pltfrmweather.HourForecast;
 import com.simongarton.pltfrm.weather.lambda.model.pltfrmweather.PltfrmWeatherLog;
 import software.amazon.awssdk.enhanced.dynamodb.DynamoDbTable;
 import software.amazon.awssdk.enhanced.dynamodb.Key;
@@ -17,11 +19,15 @@ public class WeatherDynamoDBService extends PltfrmDynamoDBService {
     public static final String PLATFORM_WEATHER_FORECAST_DAY_TABLE = "PltfrmWeatherForecastDay";
 
     private final DynamoDbTable<PltfrmWeatherLog> logTable;
+    private final DynamoDbTable<HourForecast> hourForecastTable;
+    private final DynamoDbTable<DayForecast> dayForecastTable;
 
     public WeatherDynamoDBService() {
 
         super();
         this.logTable = this.dynamoDbEnhancedClient.table(PLATFORM_WEATHER_LOG_TABLE, TableSchema.fromBean(PltfrmWeatherLog.class));
+        this.hourForecastTable = this.dynamoDbEnhancedClient.table(PLATFORM_WEATHER_FORECAST_HOUR_TABLE, TableSchema.fromBean(HourForecast.class));
+        this.dayForecastTable = this.dynamoDbEnhancedClient.table(PLATFORM_WEATHER_FORECAST_DAY_TABLE, TableSchema.fromBean(DayForecast.class));
     }
 
     /*
@@ -68,5 +74,13 @@ public class WeatherDynamoDBService extends PltfrmDynamoDBService {
             newPltfrmWeatherLog.setActualTime(DateTimeUtils.asOffsetDateTimeString(OffsetDateTime.now()));
             this.logTable.putItem(newPltfrmWeatherLog);
         }
+    }
+
+    public void putHourForecast(final HourForecast hourForecast) {
+        this.hourForecastTable.putItem(hourForecast);
+    }
+
+    public void putDayForecast(final DayForecast dayForecast) {
+        this.dayForecastTable.putItem(dayForecast);
     }
 }

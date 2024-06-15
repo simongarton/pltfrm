@@ -2,6 +2,7 @@ package com.simongarton.platform.utils;
 
 import java.time.Instant;
 import java.time.OffsetDateTime;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 
 public class DateTimeUtils {
@@ -17,5 +18,9 @@ public class DateTimeUtils {
 
     public static String asOffsetDateTimeString(final OffsetDateTime timestamp) {
         return DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(timestamp);
+    }
+
+    public static OffsetDateTime getTimeInPacificAuckland() {
+        return OffsetDateTime.now().withOffsetSameInstant(ZoneId.of("Pacific/Auckland").getRules().getOffset(Instant.now()));
     }
 }

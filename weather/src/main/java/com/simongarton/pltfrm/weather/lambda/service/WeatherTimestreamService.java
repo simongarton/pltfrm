@@ -17,6 +17,8 @@ import java.util.stream.Collectors;
 
 public class WeatherTimestreamService extends PltfrmTimestreamService {
 
+    public static final String PLATFORM_WEATHER_TABLE_NAME = "pltfrm-weather-day-table";
+
     public int saveData(final WeatherCurrentAndForecast weatherCurrentAndForecast,
                         final String databaseName,
                         final String tableName) {

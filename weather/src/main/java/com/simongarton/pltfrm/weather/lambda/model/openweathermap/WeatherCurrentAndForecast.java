@@ -2,10 +2,12 @@ package com.simongarton.pltfrm.weather.lambda.model.openweathermap;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
+import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbBean;
 
 import java.util.List;
 
 @Data
+@DynamoDbBean
 public class WeatherCurrentAndForecast {
 
     private double lat;

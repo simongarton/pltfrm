@@ -1,10 +1,10 @@
 resource "aws_dynamodb_table" "pltfrm_weather_weather_table" {
   name         = "PltfrmWeatherWeather"
   billing_mode = "PAY_PER_REQUEST"
-  hash_key     = "Timestamp"
+  hash_key     = "timestamp"
 
   attribute {
-    name = "Timestamp"
+    name = "timestamp"
     type = "S"
   }
 
@@ -18,10 +18,10 @@ resource "aws_dynamodb_table" "pltfrm_weather_weather_table" {
 resource "aws_dynamodb_table" "pltfrm_weather_forecast_hour_table" {
   name         = "PltfrmWeatherForecastHour"
   billing_mode = "PAY_PER_REQUEST"
-  hash_key     = "Timestamp"
+  hash_key     = "timestamp"
 
   attribute {
-    name = "Timestamp"
+    name = "timestamp"
     type = "S"
   }
 
@@ -35,10 +35,10 @@ resource "aws_dynamodb_table" "pltfrm_weather_forecast_hour_table" {
 resource "aws_dynamodb_table" "pltfrm_weather_forecast_day_table" {
   name         = "PltfrmWeatherForecastDay"
   billing_mode = "PAY_PER_REQUEST"
-  hash_key     = "Timestamp"
+  hash_key     = "timestamp"
 
   attribute {
-    name = "Timestamp"
+    name = "timestamp"
     type = "S"
   }
 

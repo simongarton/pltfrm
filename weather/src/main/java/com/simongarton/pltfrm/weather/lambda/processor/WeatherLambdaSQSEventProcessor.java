@@ -10,6 +10,8 @@ import com.simongarton.pltfrm.weather.lambda.model.FileNotification;
 import com.simongarton.pltfrm.weather.lambda.model.openweathermap.Weather;
 import com.simongarton.pltfrm.weather.lambda.model.openweathermap.WeatherCurrentAndForecast;
 import com.simongarton.pltfrm.weather.lambda.model.openweathermap.WeatherMinute;
+import com.simongarton.pltfrm.weather.lambda.model.pltfrmweather.DayForecast;
+import com.simongarton.pltfrm.weather.lambda.model.pltfrmweather.HourForecast;
 import com.simongarton.pltfrm.weather.lambda.service.WeatherDynamoDBService;
 import com.simongarton.pltfrm.weather.lambda.service.WeatherTimestreamService;
 import org.slf4j.Logger;
@@ -36,7 +38,6 @@ public class WeatherLambdaSQSEventProcessor {
     private final String bucketName;
     private final String databaseName;
     private final String timestreamTableName;
-    private final String dynamoLogTableName;
     private final String dynamoWeatherTableName;
     private final String dynamoForecastHourTableName;
     private final String dynamoForecastDayTableName;
@@ -45,6 +46,7 @@ public class WeatherLambdaSQSEventProcessor {
             final PltfrmS3Service s3Service,
             final WeatherDynamoDBService weatherDynamoDBService,
             final WeatherTimestreamService weatherTimestreamService) {
+
         this.s3Service = s3Service;
         this.weatherDynamoDBService = weatherDynamoDBService;
         this.weatherTimestreamService = weatherTimestreamService;
@@ -52,8 +54,7 @@ public class WeatherLambdaSQSEventProcessor {
         final PltfrmSSMService pltfrmSSMService = PltfrmCommonFactory.getPltfrmSSMService();
         this.bucketName = pltfrmSSMService.getParameterValue(WEATHER_BUCKET_NAME);
         this.databaseName = pltfrmSSMService.getParameterValue(WEATHER_DATABASE_NAME);
-        this.timestreamTableName = "pltfrm-weather-day-table";
-        this.dynamoLogTableName = WeatherDynamoDBService.PLATFORM_WEATHER_LOG_TABLE;
+        this.timestreamTableName = WeatherTimestreamService.PLATFORM_WEATHER_TABLE_NAME;
         this.dynamoWeatherTableName = WeatherDynamoDBService.PLATFORM_WEATHER_WEATHER_TABLE;
         this.dynamoForecastHourTableName = WeatherDynamoDBService.PLATFORM_WEATHER_FORECAST_HOUR_TABLE;
         this.dynamoForecastDayTableName = WeatherDynamoDBService.PLATFORM_WEATHER_FORECAST_DAY_TABLE;
@@ -84,17 +85,33 @@ public class WeatherLambdaSQSEventProcessor {
             LOG.info("Wrote forecast hour to DynamoDB");
         }
         if (!this.updateDone(currentDay, this.dynamoForecastDayTableName)) {
-            this.writeForecastDayToDynamoDB(weatherCurrentAndForecast, currentHour);
+            this.writeForecastDayToDynamoDB(weatherCurrentAndForecast, currentDay);
             LOG.info("Wrote forecast day to DynamoDB");
         }
     }
 
-    private void writeForecastDayToDynamoDB(final WeatherCurrentAndForecast weatherCurrentAndForecast, final String currentHour) {
+    private void writeForecastDayToDynamoDB(final WeatherCurrentAndForecast weatherCurrentAndForecast, final String currentDay) {
 
+        final DayForecast dayForecast = new DayForecast();
+        dayForecast.setTimestamp(currentDay);
+        dayForecast.setForecastDayIndex(DateTimeUtils.getTimeInPacificAuckland().getHour());
+        dayForecast.setForecastDays(weatherCurrentAndForecast.getDayList());
+
+        this.weatherDynamoDBService.putDayForecast(dayForecast);
+
+        this.doUpdate(currentDay, this.dynamoWeatherTableName);
     }
 
     private void writeForecastHourToDynamoDB(final WeatherCurrentAndForecast weatherCurrentAndForecast, final String currentHour) {
 
+        final HourForecast hourForecast = new HourForecast();
+        hourForecast.setTimestamp(currentHour);
+        hourForecast.setForecastHourIndex(DateTimeUtils.getTimeInPacificAuckland().getHour());
+        hourForecast.setForecastHours(weatherCurrentAndForecast.getHourList());
+
+        this.weatherDynamoDBService.putHourForecast(hourForecast);
+
+        this.doUpdate(currentHour, this.dynamoWeatherTableName);
     }
 
     private boolean updateDone(final String timestamp, final String key) {
@@ -128,7 +145,7 @@ public class WeatherLambdaSQSEventProcessor {
         final String weather = weatherCurrentAndForecast.getCurrent().getWeather().stream().map(Weather::getMain).collect(Collectors.joining(","));
 
         final Map<String, Object> item = new HashMap<>();
-        item.put("Timestamp", key);
+        item.put("timestamp", key);
         item.put("Temperature", String.format("%.2f", weatherCurrentAndForecast.getCurrent().getTemp()));
         item.put("FeelsLike", String.format("%.2f", weatherCurrentAndForecast.getCurrent().getFeelsLike()));
         item.put("Pressure", String.format("%d", weatherCurrentAndForecast.getCurrent().getPressure()));
