@@ -1,6 +1,7 @@
 package com.simongarton.pltfrm.weather.lambda.model.pltfrmweather;
 
 import lombok.Getter;
+import lombok.Setter;
 import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbBean;
 import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbPartitionKey;
 
@@ -8,21 +9,18 @@ import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbParti
 @DynamoDbBean
 public class PltfrmWeatherLog {
 
+    @Setter
     private String id;
     @Getter
+    @Setter
     private String timestamp;
+    @Getter
+    @Setter
+    private String actualTime;
 
     @DynamoDbPartitionKey
     public String getId() {
         return this.id;
-    }
-
-    public void setId(final String id) {
-        this.id = id;
-    }
-
-    public void setTimestamp(final String timestamp) {
-        this.timestamp = timestamp;
     }
 
 }

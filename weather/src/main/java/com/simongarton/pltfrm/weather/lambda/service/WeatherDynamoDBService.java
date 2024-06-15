@@ -1,10 +1,13 @@
 package com.simongarton.pltfrm.weather.lambda.service;
 
 import com.simongarton.platform.service.PltfrmDynamoDBService;
+import com.simongarton.platform.utils.DateTimeUtils;
 import com.simongarton.pltfrm.weather.lambda.model.pltfrmweather.PltfrmWeatherLog;
 import software.amazon.awssdk.enhanced.dynamodb.DynamoDbTable;
 import software.amazon.awssdk.enhanced.dynamodb.Key;
 import software.amazon.awssdk.enhanced.dynamodb.TableSchema;
+
+import java.time.OffsetDateTime;
 
 public class WeatherDynamoDBService extends PltfrmDynamoDBService {
 
@@ -12,6 +15,14 @@ public class WeatherDynamoDBService extends PltfrmDynamoDBService {
     public static final String PLATFORM_WEATHER_WEATHER_TABLE = "PltfrmWeatherWeather";
     public static final String PLATFORM_WEATHER_FORECAST_HOUR_TABLE = "PltfrmWeatherForecastHour";
     public static final String PLATFORM_WEATHER_FORECAST_DAY_TABLE = "PltfrmWeatherForecastDay";
+
+    private final DynamoDbTable<PltfrmWeatherLog> logTable;
+
+    public WeatherDynamoDBService() {
+
+        super();
+        this.logTable = this.dynamoDbEnhancedClient.table(PLATFORM_WEATHER_LOG_TABLE, TableSchema.fromBean(PltfrmWeatherLog.class));
+    }
 
     /*
 
@@ -32,12 +43,10 @@ public class WeatherDynamoDBService extends PltfrmDynamoDBService {
 
     public String getLog(final String tableName) {
 
-        final DynamoDbTable<PltfrmWeatherLog> logTable = this.dynamoDbEnhancedClient.table(PLATFORM_WEATHER_LOG_TABLE, TableSchema.fromBean(PltfrmWeatherLog.class));
-
         final Key key = Key.builder()
                 .partitionValue(tableName)
                 .build();
-        final PltfrmWeatherLog pltfrmWeatherLog = logTable.getItem(key);
+        final PltfrmWeatherLog pltfrmWeatherLog = this.logTable.getItem(key);
 
         if (pltfrmWeatherLog != null) {
             return pltfrmWeatherLog.getTimestamp();
@@ -47,16 +56,17 @@ public class WeatherDynamoDBService extends PltfrmDynamoDBService {
 
     public void setLog(final String tableName, final String timestamp) {
 
-        final DynamoDbTable<PltfrmWeatherLog> logTable = this.dynamoDbEnhancedClient.table(PLATFORM_WEATHER_LOG_TABLE, TableSchema.fromBean(PltfrmWeatherLog.class));
-        final PltfrmWeatherLog pltfrmWeatherLog = logTable.getItem(Key.builder().partitionValue(tableName).build());
+        final PltfrmWeatherLog pltfrmWeatherLog = this.logTable.getItem(Key.builder().partitionValue(tableName).build());
         if (pltfrmWeatherLog != null) {
             pltfrmWeatherLog.setTimestamp(timestamp);
-            logTable.putItem(pltfrmWeatherLog);
+            pltfrmWeatherLog.setActualTime(DateTimeUtils.asOffsetDateTimeString(OffsetDateTime.now()));
+            this.logTable.putItem(pltfrmWeatherLog);
         } else {
             final PltfrmWeatherLog newPltfrmWeatherLog = new PltfrmWeatherLog();
             newPltfrmWeatherLog.setId(tableName);
             newPltfrmWeatherLog.setTimestamp(timestamp);
-            logTable.putItem(newPltfrmWeatherLog);
+            newPltfrmWeatherLog.setActualTime(DateTimeUtils.asOffsetDateTimeString(OffsetDateTime.now()));
+            this.logTable.putItem(newPltfrmWeatherLog);
         }
     }
 }
