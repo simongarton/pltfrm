@@ -1,5 +1,5 @@
 resource "aws_dynamodb_table" "pltfrm_weather_weather_table" {
-  name         = "pltfrm-weather-weather-table"
+  name         = "PltfrmWeatherWeather"
   billing_mode = "PAY_PER_REQUEST"
   hash_key     = "Timestamp"
 
@@ -9,14 +9,14 @@ resource "aws_dynamodb_table" "pltfrm_weather_weather_table" {
   }
 
   tags = {
-    Name    = "pltfrm-weather-weather-table"
+    Name    = "PltfrmWeatherWeather"
     Owner   = "simon.garton@gmail.com"
     Project = "lambda-queue"
   }
 }
 
 resource "aws_dynamodb_table" "pltfrm_weather_forecast_hour_table" {
-  name         = "pltfrm-weather-forecast-hour-table"
+  name         = "PltfrmWeatherForecastHour"
   billing_mode = "PAY_PER_REQUEST"
   hash_key     = "Timestamp"
 
@@ -26,14 +26,14 @@ resource "aws_dynamodb_table" "pltfrm_weather_forecast_hour_table" {
   }
 
   tags = {
-    Name    = "pltfrm-weather-forecast-hour-table"
+    Name    = "PltfrmWeatherForecastHour"
     Owner   = "simon.garton@gmail.com"
     Project = "lambda-queue"
   }
 }
 
 resource "aws_dynamodb_table" "pltfrm_weather_forecast_day_table" {
-  name         = "pltfrm-weather-forecast-day-table"
+  name         = "PltfrmWeatherForecastDay"
   billing_mode = "PAY_PER_REQUEST"
   hash_key     = "Timestamp"
 
@@ -43,24 +43,24 @@ resource "aws_dynamodb_table" "pltfrm_weather_forecast_day_table" {
   }
 
   tags = {
-    Name    = "pltfrm-weather-forecast-day-table"
+    Name    = "PltfrmWeatherForecastDay"
     Owner   = "simon.garton@gmail.com"
     Project = "lambda-queue"
   }
 }
 
 resource "aws_dynamodb_table" "pltfrm_weather_log_table" {
-  name         = "pltfrm-weather-log-table"
+  name         = "PltfrmWeatherLog"
   billing_mode = "PAY_PER_REQUEST"
-  hash_key     = "WeatherTable"
+  hash_key     = "id"
 
   attribute {
-    name = "WeatherTable"
+    name = "id"
     type = "S"
   }
 
   tags = {
-    Name    = "pltfrm-weather-log-table"
+    Name    = "PltfrmWeatherLog"
     Owner   = "simon.garton@gmail.com"
     Project = "lambda-queue"
   }

@@ -1,4 +1,4 @@
-package com.simongarton.pltfrm.weather.lambda.model.factory;
+package com.simongarton.pltfrm.weather.lambda.factory;
 
 import com.simongarton.pltfrm.weather.lambda.service.WeatherDynamoDBService;
 import com.simongarton.pltfrm.weather.lambda.service.WeatherTimestreamService;

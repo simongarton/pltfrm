@@ -1,29 +1,27 @@
 package com.simongarton.pltfrm.weather.lambda.model.pltfrmweather;
 
+import lombok.Getter;
 import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbBean;
 import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbPartitionKey;
 
 
 @DynamoDbBean
-public class Log {
+public class PltfrmWeatherLog {
 
-    private String weatherTable;
+    private String id;
+    @Getter
     private String timestamp;
 
     @DynamoDbPartitionKey
-    public String getWeatherTable() {
-        return this.weatherTable;
+    public String getId() {
+        return this.id;
     }
 
-    public void setWeatherTable(String weatherTable) {
-        this.weatherTable = weatherTable;
+    public void setId(final String id) {
+        this.id = id;
     }
 
-    public String getTimestamp() {
-        return this.timestamp;
-    }
-
-    public void setTimestamp(String timestamp) {
+    public void setTimestamp(final String timestamp) {
         this.timestamp = timestamp;
     }
 
