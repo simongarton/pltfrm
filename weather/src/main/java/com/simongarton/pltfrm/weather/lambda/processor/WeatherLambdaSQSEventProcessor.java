@@ -73,8 +73,9 @@ public class WeatherLambdaSQSEventProcessor {
     }
 
     private void handleWritesToDynamoDB(final WeatherCurrentAndForecast weatherCurrentAndForecast) {
-        final String currentHour = DateTimeUtils.asOffsetDateTimeString(OffsetDateTime.now().truncatedTo(ChronoUnit.HOURS));
-        final String currentDay = DateTimeUtils.asOffsetDateTimeString(OffsetDateTime.now().truncatedTo(ChronoUnit.DAYS));
+        final OffsetDateTime nowInPacificAuckland = DateTimeUtils.inPacificAuckland(OffsetDateTime.now());
+        final String currentHour = DateTimeUtils.asOffsetDateTimeString(nowInPacificAuckland.truncatedTo(ChronoUnit.HOURS));
+        final String currentDay = DateTimeUtils.asOffsetDateTimeString(nowInPacificAuckland.truncatedTo(ChronoUnit.DAYS));
 
         if (!this.updateDone(currentHour, this.dynamoWeatherTableName)) {
             this.writeCurrentWeatherToDynamoDB(weatherCurrentAndForecast, currentHour);
@@ -94,7 +95,9 @@ public class WeatherLambdaSQSEventProcessor {
 
         final DayForecast dayForecast = new DayForecast();
         dayForecast.setTimestamp(currentDay);
-        dayForecast.setForecastDayIndex(DateTimeUtils.getTimeInPacificAuckland().getHour());
+        dayForecast.setActualTime(DateTimeUtils.asOffsetDateTimeString(
+                DateTimeUtils.inPacificAuckland(OffsetDateTime.now())
+        ));
         dayForecast.setForecastDays(weatherCurrentAndForecast.getDayList());
 
         this.weatherDynamoDBService.putDayForecast(dayForecast);
@@ -106,7 +109,9 @@ public class WeatherLambdaSQSEventProcessor {
 
         final HourForecast hourForecast = new HourForecast();
         hourForecast.setTimestamp(currentHour);
-        hourForecast.setForecastHourIndex(DateTimeUtils.getTimeInPacificAuckland().getHour());
+        hourForecast.setActualTime(DateTimeUtils.asOffsetDateTimeString(
+                DateTimeUtils.inPacificAuckland(OffsetDateTime.now())
+        ));
         hourForecast.setForecastHours(weatherCurrentAndForecast.getHourList());
 
         this.weatherDynamoDBService.putHourForecast(hourForecast);

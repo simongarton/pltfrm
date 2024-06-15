@@ -5,7 +5,6 @@ import lombok.Getter;
 import lombok.Setter;
 import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbBean;
 import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbPartitionKey;
-import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbSortKey;
 
 import java.util.List;
 
@@ -14,7 +13,9 @@ import java.util.List;
 public class DayForecast {
 
     private String timestamp;
-    private int forecastDayIndex;
+    @Getter
+    @Setter
+    private String actualTime;
     @Getter
     @Setter
     private List<WeatherDay> forecastDays;
@@ -22,10 +23,5 @@ public class DayForecast {
     @DynamoDbPartitionKey
     public String getTimestamp() {
         return this.timestamp;
-    }
-
-    @DynamoDbSortKey
-    public int getForecastDayIndex() {
-        return this.forecastDayIndex;
     }
 }

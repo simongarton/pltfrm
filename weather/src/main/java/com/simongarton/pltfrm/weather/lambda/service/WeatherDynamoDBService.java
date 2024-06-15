@@ -66,13 +66,19 @@ public class WeatherDynamoDBService extends PltfrmDynamoDBService {
         final PltfrmWeatherLog pltfrmWeatherLog = this.logTable.getItem(Key.builder().partitionValue(tableName).build());
         if (pltfrmWeatherLog != null) {
             pltfrmWeatherLog.setTimestamp(timestamp);
-            pltfrmWeatherLog.setActualTime(DateTimeUtils.asOffsetDateTimeString(OffsetDateTime.now().truncatedTo(ChronoUnit.SECONDS)));
+            pltfrmWeatherLog.setActualTime(
+                    DateTimeUtils.asOffsetDateTimeString(
+                            DateTimeUtils.inPacificAuckland(OffsetDateTime.now())
+                                    .truncatedTo(ChronoUnit.SECONDS)));
             this.logTable.putItem(pltfrmWeatherLog);
         } else {
             final PltfrmWeatherLog newPltfrmWeatherLog = new PltfrmWeatherLog();
             newPltfrmWeatherLog.setId(tableName);
             newPltfrmWeatherLog.setTimestamp(timestamp);
-            newPltfrmWeatherLog.setActualTime(DateTimeUtils.asOffsetDateTimeString(OffsetDateTime.now().truncatedTo(ChronoUnit.SECONDS)));
+            newPltfrmWeatherLog.setActualTime(
+                    DateTimeUtils.asOffsetDateTimeString(
+                            DateTimeUtils.inPacificAuckland(OffsetDateTime.now())
+                                    .truncatedTo(ChronoUnit.SECONDS)));
             this.logTable.putItem(newPltfrmWeatherLog);
         }
     }
@@ -83,5 +89,21 @@ public class WeatherDynamoDBService extends PltfrmDynamoDBService {
 
     public void putDayForecast(final DayForecast dayForecast) {
         this.dayForecastTable.putItem(dayForecast);
+    }
+
+    public DayForecast getDayForecast(final String timestamp) {
+
+        final Key key = Key.builder()
+                .partitionValue(timestamp)
+                .build();
+        return this.dayForecastTable.getItem(key);
+    }
+
+    public HourForecast getHourForecast(final String timestamp) {
+
+        final Key key = Key.builder()
+                .partitionValue(timestamp)
+                .build();
+        return this.hourForecastTable.getItem(key);
     }
 }

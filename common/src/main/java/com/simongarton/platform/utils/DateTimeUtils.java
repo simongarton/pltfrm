@@ -7,6 +7,8 @@ import java.time.format.DateTimeFormatter;
 
 public class DateTimeUtils {
 
+    public static final String PACIFIC_AUCKLAND = "Pacific/Auckland";
+
     public static OffsetDateTime longToOffsetDateTime(final long epoch) {
         return OffsetDateTime.ofInstant(Instant.ofEpochSecond(epoch), OffsetDateTime.now().getOffset());
     }
@@ -20,7 +22,7 @@ public class DateTimeUtils {
         return DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(timestamp);
     }
 
-    public static OffsetDateTime getTimeInPacificAuckland() {
-        return OffsetDateTime.now().withOffsetSameInstant(ZoneId.of("Pacific/Auckland").getRules().getOffset(Instant.now()));
+    public static OffsetDateTime inPacificAuckland(final OffsetDateTime timestamp) {
+        return timestamp.withOffsetSameInstant(ZoneId.of(PACIFIC_AUCKLAND).getRules().getOffset(Instant.now()));
     }
 }
