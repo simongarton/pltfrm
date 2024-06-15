@@ -5,9 +5,10 @@ module "lambda" {
   openweathermap-api-key = "SECRET"
   openweathermap-url     = "https://api.openweathermap.org/data/3.0/onecall"
 
-  application_key_arn     = module.kms.application_key_arn
-  timestream_database_arn = module.timestream.database.arn
-  weather_queue_arn       = module.sns_sqs.queue.arn
+  application_key_arn  = module.kms.application_key_arn
+  timestream_table_arn = module.timestream.day_table.arn
+
+  weather_queue_arn = module.sns_sqs.queue.arn
 
   dynamodb_table_arns = module.dynamodb.dynamodb_table_arns
 
@@ -57,10 +58,8 @@ module "sns_sqs" {
 module "timestream" {
   source = "./timestream"
 
-  database_name = "pltfrm-weather"
-  table_names   = [
-    "pltfrm-weather-day-table"
-  ]
+  database_name  = "pltfrm-weather"
+  day_table_name = "pltfrm-weather-day-table"
 
   database_name_for_ssm = "/pltfrm/weather-timestream-database-name"
 }

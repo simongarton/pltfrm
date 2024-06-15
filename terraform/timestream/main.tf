@@ -8,11 +8,10 @@ resource "aws_timestreamwrite_database" "this" {
   }
 }
 
-resource "aws_timestreamwrite_table" "readings-table" {
+resource "aws_timestreamwrite_table" "day_table" {
 
-  for_each      = toset(var.table_names)
   database_name = aws_timestreamwrite_database.this.database_name
-  table_name    = each.key
+  table_name    = var.day_table_name
 
   retention_properties {
     magnetic_store_retention_period_in_days = 1000
@@ -20,7 +19,7 @@ resource "aws_timestreamwrite_table" "readings-table" {
   }
 
   tags = {
-    Name    = each.key
+    Name    = var.day_table_name
     Owner   = "simon.garton@gmail.com"
     Project = "pltform"
   }

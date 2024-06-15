@@ -1,4 +1,4 @@
-variable "table_names" {}
+variable "day_table_name" {}
 
 variable "database_name" {}
 

@@ -75,7 +75,8 @@ public class PltfrmTimestreamService {
             }
             recordsWritten = recordsWritten - e.rejectedRecords().size();
         } catch (final Exception e) {
-            LOG.error(e.getClass().getSimpleName() + " : " + e.getMessage());
+            // this is swallowing the error : it should be thrown back to the caller
+            LOG.error(e.getClass().getSimpleName() + " : " + e.getMessage(), e);
         }
 
         return recordsWritten;
