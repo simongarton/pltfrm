@@ -39,8 +39,8 @@ resource "aws_iam_policy" "pltfrm_iam_pass_role" {
   })
 }
 
-resource "aws_iam_policy" "pltfrm_s3_kms_policy" {
-  name = "pltfrm-s3-kms-policy"
+resource "aws_iam_policy" "pltfrm_infrastructure_policy" {
+  name = "pltfrm-s3-infrastructure-policy"
 
   policy = jsonencode({
     Version   = "2012-10-17"
@@ -53,6 +53,16 @@ resource "aws_iam_policy" "pltfrm_s3_kms_policy" {
           "kms:GenerateDataKey",
         ]
         Resource = var.application_key_arn
+      },
+      {
+        Effect = "Allow"
+        Action = [
+          "cloudwatch:PutMetricData",
+          "cloudwatch:GetMetricData",
+          "cloudwatch:GetMetricStatistics",
+          "cloudwatch:ListMetrics",
+        ]
+        Resource = "*"
       },
     ]
   })
@@ -78,8 +88,8 @@ resource "aws_iam_policy" "pltfrm_s3_policy" {
   })
 }
 
-resource "aws_iam_policy" "pltfrm_sns_policy" {
-  name = "pltfrm-sns-policy"
+resource "aws_iam_policy" "pltfrm_sns_sqs_policy" {
+  name = "pltfrm-sns-sqs-policy"
 
   policy = jsonencode({
     Version   = "2012-10-17"
@@ -91,16 +101,6 @@ resource "aws_iam_policy" "pltfrm_sns_policy" {
         ]
         Resource = "*"
       },
-    ]
-  })
-}
-
-resource "aws_iam_policy" "pltfrm_sqs_policy" {
-  name = "pltfrm-sqs-policy"
-
-  policy = jsonencode({
-    Version   = "2012-10-17"
-    Statement = [
       {
         Effect = "Allow"
         Action = [
@@ -115,8 +115,8 @@ resource "aws_iam_policy" "pltfrm_sqs_policy" {
   })
 }
 
-resource "aws_iam_policy" "pltfrm_timestream_policy" {
-  name = "pltfrm-timestream-policy"
+resource "aws_iam_policy" "pltfrm_database_policy" {
+  name = "pltfrm-database-policy"
 
   policy = jsonencode({
     Version   = "2012-10-17"
@@ -137,17 +137,7 @@ resource "aws_iam_policy" "pltfrm_timestream_policy" {
           "timestream:DescribeTable",
         ],
         "Resource" : "*"
-      }
-    ]
-  })
-}
-
-resource "aws_iam_policy" "pltfrm_dynamodb_policy" {
-  name = "pltfrm-dynamodb-policy"
-
-  policy = jsonencode({
-    Version   = "2012-10-17"
-    Statement = [
+      },
       {
         Effect = "Allow"
         Action = [
@@ -180,9 +170,9 @@ resource "aws_iam_role_policy_attachment" "pltfrm_iam_pass_role_attach" {
   policy_arn = aws_iam_policy.pltfrm_iam_pass_role.arn
 }
 
-resource "aws_iam_role_policy_attachment" "pltfrm_s3_kms_policy_attach" {
+resource "aws_iam_role_policy_attachment" "pltfrm_infrastructure_policy_attach" {
   role       = aws_iam_role.pltfrm_lambda_iam.name
-  policy_arn = aws_iam_policy.pltfrm_s3_kms_policy.arn
+  policy_arn = aws_iam_policy.pltfrm_infrastructure_policy.arn
 }
 
 resource "aws_iam_role_policy_attachment" "pltfrm_s3_policy_attach" {
@@ -190,22 +180,12 @@ resource "aws_iam_role_policy_attachment" "pltfrm_s3_policy_attach" {
   policy_arn = aws_iam_policy.pltfrm_s3_policy.arn
 }
 
-resource "aws_iam_role_policy_attachment" "pltfrm_sns_policy_attach" {
+resource "aws_iam_role_policy_attachment" "pltfrm_sns_sqs_policy_attach" {
   role       = aws_iam_role.pltfrm_lambda_iam.name
-  policy_arn = aws_iam_policy.pltfrm_sns_policy.arn
+  policy_arn = aws_iam_policy.pltfrm_sns_sqs_policy.arn
 }
 
-resource "aws_iam_role_policy_attachment" "pltfrm_sqs_policy_attach" {
+resource "aws_iam_role_policy_attachment" "pltfrm_database_policy_attach" {
   role       = aws_iam_role.pltfrm_lambda_iam.name
-  policy_arn = aws_iam_policy.pltfrm_sqs_policy.arn
-}
-
-resource "aws_iam_role_policy_attachment" "pltfrm_timestream_policy_attach" {
-  role       = aws_iam_role.pltfrm_lambda_iam.name
-  policy_arn = aws_iam_policy.pltfrm_timestream_policy.arn
-}
-
-resource "aws_iam_role_policy_attachment" "pltfrm_dynamodb_policy_attach" {
-  role       = aws_iam_role.pltfrm_lambda_iam.name
-  policy_arn = aws_iam_policy.pltfrm_dynamodb_policy.arn
+  policy_arn = aws_iam_policy.pltfrm_database_policy.arn
 }

@@ -5,6 +5,8 @@ import com.simongarton.platform.utils.DateTimeUtils;
 import com.simongarton.pltfrm.weather.lambda.model.pltfrmweather.DayForecast;
 import com.simongarton.pltfrm.weather.lambda.model.pltfrmweather.HourForecast;
 import com.simongarton.pltfrm.weather.lambda.model.pltfrmweather.PltfrmWeatherLog;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import software.amazon.awssdk.enhanced.dynamodb.DynamoDbTable;
 import software.amazon.awssdk.enhanced.dynamodb.Key;
 import software.amazon.awssdk.enhanced.dynamodb.TableSchema;
@@ -13,6 +15,8 @@ import java.time.OffsetDateTime;
 import java.time.temporal.ChronoUnit;
 
 public class WeatherDynamoDBService extends PltfrmDynamoDBService {
+
+    private static final Logger LOG = LoggerFactory.getLogger(PltfrmDynamoDBService.class);
 
     public static final String PLATFORM_WEATHER_LOG_TABLE = "PltfrmWeatherLog";
     public static final String PLATFORM_WEATHER_WEATHER_TABLE = "PltfrmWeatherWeather";
@@ -56,8 +60,10 @@ public class WeatherDynamoDBService extends PltfrmDynamoDBService {
         final PltfrmWeatherLog pltfrmWeatherLog = this.logTable.getItem(key);
 
         if (pltfrmWeatherLog != null) {
+            LOG.info("Found pltfrmWeatherLog {} for {}", pltfrmWeatherLog.getTimestamp(), tableName);
             return pltfrmWeatherLog.getTimestamp();
         }
+        LOG.warn("No pltfrmWeatherLog found for {}", tableName);
         return null;
     }
 
@@ -96,7 +102,9 @@ public class WeatherDynamoDBService extends PltfrmDynamoDBService {
         final Key key = Key.builder()
                 .partitionValue(timestamp)
                 .build();
-        return this.dayForecastTable.getItem(key);
+        final DayForecast dayForecast = this.dayForecastTable.getItem(key);
+        LOG.info("Looking for day forecast for {} and found {}", timestamp, dayForecast);
+        return dayForecast;
     }
 
     public HourForecast getHourForecast(final String timestamp) {
@@ -104,6 +112,8 @@ public class WeatherDynamoDBService extends PltfrmDynamoDBService {
         final Key key = Key.builder()
                 .partitionValue(timestamp)
                 .build();
-        return this.hourForecastTable.getItem(key);
+        final HourForecast hourForecast = this.hourForecastTable.getItem(key);
+        LOG.info("Looking for hour forecast for {} and found {}", timestamp, hourForecast);
+        return hourForecast;
     }
 }

@@ -5,11 +5,15 @@ import com.simongarton.platform.exception.InternalServerErrorException;
 import com.simongarton.pltfrm.weather.lambda.model.pltfrmweather.DayForecast;
 import com.simongarton.pltfrm.weather.lambda.model.pltfrmweather.HourForecast;
 import com.simongarton.pltfrm.weather.lambda.service.WeatherDynamoDBService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
 
 public class WeatherLambdaAPIGatewayProcessor {
+
+    private static final Logger LOG = LoggerFactory.getLogger(WeatherLambdaAPIGatewayProcessor.class);
 
     private final OpenWeatherMapClient openWeatherMapClient;
     private final WeatherDynamoDBService weatherDynamoDBService;
@@ -35,7 +39,10 @@ public class WeatherLambdaAPIGatewayProcessor {
         // check the log table for the latest day forecast timestamp
         final String timestamp = this.weatherDynamoDBService.getLog(
                 WeatherDynamoDBService.PLATFORM_WEATHER_FORECAST_HOUR_TABLE);
-        if (timestamp != null) {
+        LOG.info("for getWeatherHourForecast() I got a timestamp of {} on {}.",
+                timestamp,
+                WeatherDynamoDBService.PLATFORM_WEATHER_FORECAST_HOUR_TABLE);
+        if (timestamp == null) {
             return null;
         }
 
@@ -49,7 +56,10 @@ public class WeatherLambdaAPIGatewayProcessor {
         // check the log table for the latest day forecast timestamp
         final String timestamp = this.weatherDynamoDBService.getLog(
                 WeatherDynamoDBService.PLATFORM_WEATHER_FORECAST_DAY_TABLE);
-        if (timestamp != null) {
+        LOG.info("for getWeatherHourForecast() I got a timestamp of {} on {}.",
+                timestamp,
+                WeatherDynamoDBService.PLATFORM_WEATHER_FORECAST_DAY_TABLE);
+        if (timestamp == null) {
             return null;
         }
 

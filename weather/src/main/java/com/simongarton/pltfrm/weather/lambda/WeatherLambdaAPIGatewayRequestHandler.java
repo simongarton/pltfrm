@@ -54,12 +54,12 @@ public class WeatherLambdaAPIGatewayRequestHandler implements RequestHandler<API
 
         LOG.info("Starting {} for {}", this.getClass().getSimpleName(), context.getAwsRequestId());
 
-
+        LOG.info("APIGatewayProxyRequestEvent: {}", apiGatewayProxyRequestEvent);
         final String method = apiGatewayProxyRequestEvent.getHttpMethod();
         final Map<String, String> queryStringParameters = apiGatewayProxyRequestEvent.getQueryStringParameters();
         try {
             if (method.equalsIgnoreCase(APIMethod.GET.getMethod())) {
-                if (queryStringParameters.isEmpty()) {
+                if (queryStringParameters == null || queryStringParameters.isEmpty()) {
                     return this.getWeatherResponse(apiGatewayProxyRequestEvent);
                 }
                 if (queryStringParameters.containsKey("forecast")) {
