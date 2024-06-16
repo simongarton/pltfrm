@@ -1,0 +1,118 @@
+{
+	"info": {
+		"_postman_id": "a8cc8c78-3475-4556-8cf7-f386419c5798",
+		"name": "Pltfrm",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "2073433"
+	},
+	"item": [
+		{
+			"name": "weather",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "x-api-key",
+						"value": "{{api-key}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{url}}/weather",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"weather"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "weather day forecast",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "x-api-key",
+						"value": "{{api-key}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{url}}/weather?forecast=day",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"weather"
+					],
+					"query": [
+						{
+							"key": "forecast",
+							"value": "day"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "weather hour forecast",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "x-api-key",
+						"value": "{{api-key}}"
+					}
+				],
+				"url": {
+					"raw": "{{url}}/weather?forecast=hour",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"weather"
+					],
+					"query": [
+						{
+							"key": "forecast",
+							"value": "hour"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "weather data rain",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "x-api-key",
+						"value": "{{api-key}}"
+					}
+				],
+				"url": {
+					"raw": "{{url}}/weather?forecast=hour",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"weather"
+					],
+					"query": [
+						{
+							"key": "forecast",
+							"value": "hour"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

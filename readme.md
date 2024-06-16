@@ -21,6 +21,15 @@ Endpoints:
 GET {url}/weather : text description of the weather now in Auckland.
 ```
 
+## Front end
+
+I have a simple React/Vite front end available to display some of the data I'm collecting.
+
+Repository : [pltfrm-web](https://github.com/simongarton/pltfrm-web)
+
+Site : [pltfrm-web](https://pltfrm-web.netlify.app/
+)
+
 ## Software used
 
 - Java : Corretto 17

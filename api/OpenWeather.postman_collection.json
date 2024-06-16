@@ -1,0 +1,293 @@
+{
+  "info": {
+    "_postman_id": "2797c12f-5c1f-82a3-d703-6187a50afe8c",
+    "name": "OpenWeather",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "2073433"
+  },
+  "item": [
+    {
+      "name": "Weather",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "https://api.openweathermap.org/data/2.5/weather?q=Auckland&APPID=4628a260600466967c04cf9974306321",
+          "protocol": "https",
+          "host": [
+            "api",
+            "openweathermap",
+            "org"
+          ],
+          "path": [
+            "data",
+            "2.5",
+            "weather"
+          ],
+          "query": [
+            {
+              "key": "q",
+              "value": "Auckland"
+            },
+            {
+              "key": "APPID",
+              "value": "4628a260600466967c04cf9974306321"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Forecast",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://api.openweathermap.org/data/2.5/forecast?zip=90210&APPID=4628a260600466967c04cf9974306321s",
+          "protocol": "http",
+          "host": [
+            "api",
+            "openweathermap",
+            "org"
+          ],
+          "path": [
+            "data",
+            "2.5",
+            "forecast"
+          ],
+          "query": [
+            {
+              "key": "zip",
+              "value": "90210"
+            },
+            {
+              "key": "APPID",
+              "value": ""
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "OneCall - current and forecasts",
+      "request": {
+        "auth": {
+          "type": "apikey",
+          "apikey": [
+            {
+              "key": "value",
+              "value": "",
+              "type": "string"
+            },
+            {
+              "key": "key",
+              "value": "appid",
+              "type": "string"
+            },
+            {
+              "key": "in",
+              "value": "query",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://api.openweathermap.org/data/3.0/onecall?lat=-36.848461&lon=174.763336",
+          "protocol": "http",
+          "host": [
+            "api",
+            "openweathermap",
+            "org"
+          ],
+          "path": [
+            "data",
+            "3.0",
+            "onecall"
+          ],
+          "query": [
+            {
+              "key": "lat",
+              "value": "-36.848461"
+            },
+            {
+              "key": "lon",
+              "value": "174.763336"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "OneCall - timemachine",
+      "request": {
+        "auth": {
+          "type": "apikey",
+          "apikey": [
+            {
+              "key": "value",
+              "value": "",
+              "type": "string"
+            },
+            {
+              "key": "key",
+              "value": "appid",
+              "type": "string"
+            },
+            {
+              "key": "in",
+              "value": "query",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://api.openweathermap.org/data/3.0/onecall/timemachine?lat=-36.848461&lon=174.763336&dt=1586468027",
+          "protocol": "http",
+          "host": [
+            "api",
+            "openweathermap",
+            "org"
+          ],
+          "path": [
+            "data",
+            "3.0",
+            "onecall",
+            "timemachine"
+          ],
+          "query": [
+            {
+              "key": "lat",
+              "value": "-36.848461"
+            },
+            {
+              "key": "lon",
+              "value": "174.763336"
+            },
+            {
+              "key": "dt",
+              "value": "1586468027"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "OneCall - day_summary",
+      "request": {
+        "auth": {
+          "type": "apikey",
+          "apikey": [
+            {
+              "key": "value",
+              "value": "",
+              "type": "string"
+            },
+            {
+              "key": "key",
+              "value": "appid",
+              "type": "string"
+            },
+            {
+              "key": "in",
+              "value": "query",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://api.openweathermap.org/data/3.0/onecall/day_summary?lat=-36.848461&lon=174.763336&date=2024-03-19",
+          "protocol": "http",
+          "host": [
+            "api",
+            "openweathermap",
+            "org"
+          ],
+          "path": [
+            "data",
+            "3.0",
+            "onecall",
+            "day_summary"
+          ],
+          "query": [
+            {
+              "key": "lat",
+              "value": "-36.848461"
+            },
+            {
+              "key": "lon",
+              "value": "174.763336"
+            },
+            {
+              "key": "date",
+              "value": "2024-03-19"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "OneCall - overview",
+      "request": {
+        "auth": {
+          "type": "apikey",
+          "apikey": [
+            {
+              "key": "value",
+              "value": "",
+              "type": "string"
+            },
+            {
+              "key": "key",
+              "value": "appid",
+              "type": "string"
+            },
+            {
+              "key": "in",
+              "value": "query",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://api.openweathermap.org/data/3.0/onecall/overview?lat=-36.848461&lon=174.763336",
+          "protocol": "http",
+          "host": [
+            "api",
+            "openweathermap",
+            "org"
+          ],
+          "path": [
+            "data",
+            "3.0",
+            "onecall",
+            "overview"
+          ],
+          "query": [
+            {
+              "key": "lat",
+              "value": "-36.848461"
+            },
+            {
+              "key": "lon",
+              "value": "174.763336"
+            }
+          ]
+        }
+      },
+      "response": []
+    }
+  ]
+}

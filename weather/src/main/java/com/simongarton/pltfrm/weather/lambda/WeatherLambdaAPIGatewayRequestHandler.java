@@ -72,8 +72,8 @@ public class WeatherLambdaAPIGatewayRequestHandler implements RequestHandler<API
                 if (queryStringParameters.containsKey("forecast")) {
                     return this.getWeatherForecastResponse(apiGatewayProxyRequestEvent);
                 }
-                if (queryStringParameters.containsKey("rain")) {
-                    return this.getWeatherRainResponse(apiGatewayProxyRequestEvent);
+                if (queryStringParameters.containsKey("data")) {
+                    return this.getWeatherDataResponse(apiGatewayProxyRequestEvent);
                 }
                 for (final Map.Entry<String, String> entry : queryStringParameters.entrySet()) {
                     LOG.info("Key = " + entry.getKey() + ", Value = " + entry.getValue());
@@ -106,20 +106,11 @@ public class WeatherLambdaAPIGatewayRequestHandler implements RequestHandler<API
         final Map<String, String> queryStringParameters = apiGatewayProxyRequestEvent.getQueryStringParameters();
         final String forecastType = queryStringParameters.get("forecast");
         if (forecastType.equalsIgnoreCase("hour")) {
-            final HourForecast hourForecast = this.processor.getWeatherHourForecast();
-            return this.lambdaRequestHandlerFactory.standardResponse(APIStatusCode.OK,
-                    this.getClass().getSimpleName(),
-                    APIMethod.GET.getMethod(),
-                    this.objectMapper.writeValueAsString(hourForecast)
-            );
+
+            return this.getWeatherForecastHourResponse(apiGatewayProxyRequestEvent);
         }
         if (forecastType.equalsIgnoreCase("day")) {
-            final DayForecast dayForecast = this.processor.getWeatherDayForecast();
-            return this.lambdaRequestHandlerFactory.standardResponse(APIStatusCode.OK,
-                    this.getClass().getSimpleName(),
-                    APIMethod.GET.getMethod(),
-                    this.objectMapper.writeValueAsString(dayForecast)
-            );
+            return this.getWeatherForecastDayResponse(apiGatewayProxyRequestEvent);
         }
         return this.lambdaRequestHandlerFactory.standardResponse(APIStatusCode.BAD_REQUEST,
                 this.getClass().getSimpleName(),
@@ -137,20 +128,66 @@ public class WeatherLambdaAPIGatewayRequestHandler implements RequestHandler<API
         );
     }
 
-    private APIGatewayProxyResponseEvent getWeatherRainResponse(final APIGatewayProxyRequestEvent event) throws URISyntaxException, IOException, InterruptedException {
+    private APIGatewayProxyResponseEvent getWeatherDataResponse(final APIGatewayProxyRequestEvent apiGatewayProxyRequestEvent) throws URISyntaxException, IOException, InterruptedException {
+
+        final Map<String, String> queryStringParameters = apiGatewayProxyRequestEvent.getQueryStringParameters();
+        final String forecastType = queryStringParameters.get("data");
+        if (forecastType.equalsIgnoreCase("rain")) {
+            return this.getWeatherDataRainResponse(apiGatewayProxyRequestEvent);
+        }
+
+        return this.lambdaRequestHandlerFactory.standardResponse(APIStatusCode.BAD_REQUEST,
+                this.getClass().getSimpleName(),
+                APIMethod.GET.getMethod(),
+                "Unknown data type: " + forecastType);
+    }
+
+    private APIGatewayProxyResponseEvent getWeatherForecastHourResponse(
+            final APIGatewayProxyRequestEvent apiGatewayProxyRequestEvent) {
+
+        final HourForecast hourForecast = this.processor.getWeatherHourForecast();
+
+        // TODO more metrics for different kind of forecast ?
+        this.cloudwatchService.addCount(
+                PltfrmCloudwatchService.API,
+                this.getClass().getSimpleName(),
+                apiGatewayProxyRequestEvent.getHttpMethod(),
+                APIStatusCode.OK.toString());
+
+        return this.buildResponse(hourForecast, APIStatusCode.OK.getStatusCode());
+    }
+
+    private APIGatewayProxyResponseEvent getWeatherForecastDayResponse(
+            final APIGatewayProxyRequestEvent apiGatewayProxyRequestEvent) {
+
+        final DayForecast dayForecast = this.processor.getWeatherDayForecast();
+
+        // TODO more metrics for different kind of forecast ?
+        this.cloudwatchService.addCount(
+                PltfrmCloudwatchService.API,
+                this.getClass().getSimpleName(),
+                apiGatewayProxyRequestEvent.getHttpMethod(),
+                APIStatusCode.OK.toString());
+
+        return this.buildResponse(dayForecast, APIStatusCode.OK.getStatusCode());
+    }
+
+    private APIGatewayProxyResponseEvent getWeatherDataRainResponse(
+            final APIGatewayProxyRequestEvent apiGatewayProxyRequestEvent) throws
+            URISyntaxException, IOException, InterruptedException {
 
         final RainHourForecast rainHourForecast = this.processor.getRainForecast();
 
         this.cloudwatchService.addCount(
                 PltfrmCloudwatchService.API,
                 this.getClass().getSimpleName(),
-                event.getHttpMethod(),
+                apiGatewayProxyRequestEvent.getHttpMethod(),
                 APIStatusCode.OK.toString());
 
         return this.buildResponse(rainHourForecast, APIStatusCode.OK.getStatusCode());
     }
 
-    // this is on the request handler factory ...
+    // this is on the request handler factory as well ...
     private APIGatewayProxyResponseEvent buildResponse(final Object o, final int statusCode) {
         final APIGatewayProxyResponseEvent responseEvent = new APIGatewayProxyResponseEvent();
         try {
