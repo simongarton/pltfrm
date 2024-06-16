@@ -21,7 +21,7 @@ resource "aws_api_gateway_integration" "weather_get_integration" {
   uri                     = var.weather_lambda.invoke_arn
 }
 
-resource "aws_lambda_permission" "weather_post_lambda" {
+resource "aws_lambda_permission" "weather_get_lambda" {
   statement_id  = "AllowPostExecutionFromAPIGateway"
   action        = "lambda:InvokeFunction"
   function_name = var.weather_lambda.function_name
