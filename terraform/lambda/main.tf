@@ -5,9 +5,13 @@ resource "aws_lambda_function" "weather_api" {
   handler                        = "com.simongarton.pltfrm.weather.lambda.WeatherLambdaAPIGatewayRequestHandler"
   source_code_hash               = filebase64sha256(var.weather_lambda_filename)
   runtime                        = var.lambda_runtime
-  memory_size                    = 512
-  timeout                        = 90
-  reserved_concurrent_executions = 1
+  memory_size                    = 1024
+  timeout                        = 30
+  reserved_concurrent_executions = 10
+  snap_start {
+    apply_on = "PublishedVersions"
+  }
+  publish = true
 
   tags = {
     Name    = "Weather APIGateway Lambda"
@@ -24,7 +28,7 @@ resource "aws_lambda_function" "weather_eventbridge" {
   source_code_hash               = filebase64sha256(var.weather_lambda_filename)
   runtime                        = var.lambda_runtime
   memory_size                    = 512
-  timeout                        = 90
+  timeout                        = 30
   reserved_concurrent_executions = 1
 
   tags = {
@@ -42,7 +46,7 @@ resource "aws_lambda_function" "weather_sqs_event" {
   source_code_hash               = filebase64sha256(var.weather_lambda_filename)
   runtime                        = var.lambda_runtime
   memory_size                    = 512
-  timeout                        = 90
+  timeout                        = 30
   reserved_concurrent_executions = 1
 
   tags = {

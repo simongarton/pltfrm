@@ -17,3 +17,4 @@ variable "timestream_table_arn" {}
 variable "weather_queue_arn" {}
 
 variable "dynamodb_table_arns" {}
+
