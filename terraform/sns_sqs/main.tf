@@ -17,11 +17,11 @@ POLICY
   tags = {
     Name    = var.topic_name
     Owner   = "simon.garton@gmail.com"
-    Project = "pltform"
+    Project = "pltfrm"
   }
 }
 
-resource "aws_sqs_queue_policy" "conversion_policy" {
+resource "aws_sqs_queue_policy" "this" {
 
   queue_url = aws_sqs_queue.this.url
 
@@ -60,7 +60,7 @@ resource "aws_sqs_queue" "this" {
   tags = {
     Name    = var.queue_name
     Owner   = "simon.garton@gmail.com"
-    Project = "pltform"
+    Project = "pltfrm"
   }
 }
 

@@ -11,7 +11,7 @@ resource "aws_dynamodb_table" "pltfrm_weather_weather_table" {
   tags = {
     Name    = "PltfrmWeatherWeather"
     Owner   = "simon.garton@gmail.com"
-    Project = "lambda-queue"
+    Project = "pltfrm"
   }
 }
 
@@ -28,7 +28,7 @@ resource "aws_dynamodb_table" "pltfrm_weather_forecast_hour_table" {
   tags = {
     Name    = "PltfrmWeatherForecastHour"
     Owner   = "simon.garton@gmail.com"
-    Project = "lambda-queue"
+    Project = "pltfrm"
   }
 }
 
@@ -45,7 +45,7 @@ resource "aws_dynamodb_table" "pltfrm_weather_forecast_day_table" {
   tags = {
     Name    = "PltfrmWeatherForecastDay"
     Owner   = "simon.garton@gmail.com"
-    Project = "lambda-queue"
+    Project = "pltfrm"
   }
 }
 
@@ -62,6 +62,6 @@ resource "aws_dynamodb_table" "pltfrm_weather_log_table" {
   tags = {
     Name    = "PltfrmWeatherLog"
     Owner   = "simon.garton@gmail.com"
-    Project = "lambda-queue"
+    Project = "pltfrm"
   }
 }
