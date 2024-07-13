@@ -1,8 +1,8 @@
 package com.simongarton.pltfrm.weather.lambda.processor;
 
 
-import com.simongarton.platform.exception.InternalServerErrorException;
-import com.simongarton.platform.utils.DateTimeUtils;
+import com.simongarton.pltfrm.exception.InternalServerErrorException;
+import com.simongarton.pltfrm.utils.DateTimeUtils;
 import com.simongarton.pltfrm.weather.lambda.model.openweathermap.WeatherCurrentAndForecast;
 import com.simongarton.pltfrm.weather.lambda.model.openweathermap.WeatherMinute;
 import com.simongarton.pltfrm.weather.lambda.model.pltfrmweather.DayForecast;

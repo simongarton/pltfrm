@@ -1,7 +1,7 @@
 package com.simongarton.pltfrm.weather.lambda.service;
 
-import com.simongarton.platform.service.PltfrmDynamoDBService;
-import com.simongarton.platform.utils.DateTimeUtils;
+import com.simongarton.pltfrm.service.PltfrmDynamoDBService;
+import com.simongarton.pltfrm.utils.DateTimeUtils;
 import com.simongarton.pltfrm.weather.lambda.model.pltfrmweather.DayForecast;
 import com.simongarton.pltfrm.weather.lambda.model.pltfrmweather.HourForecast;
 import com.simongarton.pltfrm.weather.lambda.model.pltfrmweather.PltfrmWeatherLog;

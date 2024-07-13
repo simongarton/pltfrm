@@ -1,11 +1,11 @@
 package com.simongarton.pltfrm.weather.lambda.processor;
 
 
-import com.simongarton.platform.factory.PltfrmCommonFactory;
-import com.simongarton.platform.service.PltfrmS3Service;
-import com.simongarton.platform.service.PltfrmSSMService;
-import com.simongarton.platform.service.PltfrmTimestreamService;
-import com.simongarton.platform.utils.DateTimeUtils;
+import com.simongarton.pltfrm.factory.PltfrmCommonFactory;
+import com.simongarton.pltfrm.service.PltfrmS3Service;
+import com.simongarton.pltfrm.service.PltfrmSSMService;
+import com.simongarton.pltfrm.service.PltfrmTimestreamService;
+import com.simongarton.pltfrm.utils.DateTimeUtils;
 import com.simongarton.pltfrm.weather.lambda.model.FileNotification;
 import com.simongarton.pltfrm.weather.lambda.model.openweathermap.Weather;
 import com.simongarton.pltfrm.weather.lambda.model.openweathermap.WeatherCurrentAndForecast;

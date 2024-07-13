@@ -1,9 +1,9 @@
 package com.simongarton.pltfrm.weather.lambda.processor;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.simongarton.platform.exception.InternalServerErrorException;
-import com.simongarton.platform.factory.PltfrmCommonFactory;
-import com.simongarton.platform.utils.DateTimeUtils;
+import com.simongarton.pltfrm.exception.InternalServerErrorException;
+import com.simongarton.pltfrm.factory.PltfrmCommonFactory;
+import com.simongarton.pltfrm.utils.DateTimeUtils;
 import com.simongarton.pltfrm.weather.lambda.model.openweathermap.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
