@@ -11,8 +11,9 @@
     <packaging>pom</packaging>
 
     <modules>
-        <module>weather</module>
         <module>common</module>
+        <module>lambda</module>
+        <module>weather</module>
     </modules>
 
     <properties>
@@ -120,7 +121,7 @@
             <artifactId>dynamodb-enhanced</artifactId>
             <version>${aws-version-2}</version>
         </dependency>
-        
+
         <dependency>
             <groupId>org.apache.logging.log4j</groupId>
             <artifactId>log4j-api</artifactId>
