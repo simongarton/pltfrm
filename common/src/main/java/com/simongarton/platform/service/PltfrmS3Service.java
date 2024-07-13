@@ -8,8 +8,10 @@ import com.simongarton.platform.factory.PltfrmCommonFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.nio.file.Path;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -48,6 +50,23 @@ public class PltfrmS3Service {
             LOG.error(e.getMessage(), e);
             throw e;
         }
+    }
+
+    public List<String> loadLines(final String key, final String bucketName) throws IOException {
+        final GetObjectRequest getObjectRequest = new GetObjectRequest(bucketName, key);
+        final S3Object s3Object = this.s3Client.getObject(getObjectRequest);
+        LOG.info("read " + key + " from " + bucketName);
+
+        final S3ObjectInputStream inputStream = s3Object.getObjectContent();
+        BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
+        List<String> lines = new ArrayList<>();
+
+        String line;
+        while ((line = reader.readLine()) != null) {
+            lines.add(line);
+        }
+
+        return lines;
     }
 
     public void save(final Object object,
