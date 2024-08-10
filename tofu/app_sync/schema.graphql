@@ -1,6 +1,13 @@
 type Query {
     getWeather(timestamp: String!): WeatherReport
     getHourlyWeather(timestamp: String!): HourlyWeatherReport
+    getInsult(id: Int): InsultData
+    getInsultString: String
+}
+
+type InsultData {
+    insultId: Int
+    insult: String
 }
 
 type IntervalMeasurement {

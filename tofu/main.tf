@@ -45,6 +45,7 @@ module "app_sync" {
 
   weather_table_name        = module.dynamodb.weather_table_name
   hourly_weather_table_name = module.dynamodb.hourly_weather_table_name
+  insult_lambda_arn         = module.lambda.insult_generator_lambda.arn
 
   region     = var.region
   account_id = var.account_id
