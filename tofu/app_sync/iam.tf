@@ -32,7 +32,10 @@ resource "aws_iam_policy" "appsync_dynamodb_policy" {
           "dynamodb:Query",
           "dynamodb:Scan"
         ],
-        Resource = "arn:aws:dynamodb:${var.region}:${var.account_id}:table/${var.table_name}"
+        Resource = [
+          "arn:aws:dynamodb:${var.region}:${var.account_id}:table/${var.weather_table_name}",
+          "arn:aws:dynamodb:${var.region}:${var.account_id}:table/${var.hourly_weather_table_name}"
+        ]
       }
     ]
   })

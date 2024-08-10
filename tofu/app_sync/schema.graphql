@@ -1,5 +1,6 @@
 type Query {
     getWeather(timestamp: String!): WeatherReport
+    getHourlyWeather(timestamp: String!): HourlyWeatherReport
 }
 
 type IntervalMeasurement {
@@ -19,7 +20,39 @@ type WeatherReport {
     Humidity: Int
     WindDeg: Int
     Visibility: Int
-    Rain: [IntervalMeasurement!]
+    Rain: [IntervalMeasurement!]!
+}
+
+type HourlyForecast {
+    clouds: Float
+    dewPoint: Float
+    dt: Int
+    feelsLike: Float
+    humidity: Int
+    pop: Int
+    pressure: Int
+
+    temp: Float
+    uvi: Float
+    visibility: Int
+
+    weather: [WeatherDescription!]!
+
+    windDeg: Float
+    windGust: Float
+    windSpeed: Float
+}
+
+type WeatherDescription {
+    id: Int
+    main: String
+    description: String
+    icon: String
+}
+
+type HourlyWeatherReport {
+    actualTime: String
+    forecastHours: [HourlyForecast!]
 }
 
 schema {

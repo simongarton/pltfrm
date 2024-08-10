@@ -43,7 +43,9 @@ module "app_sync" {
 
   source = "./app_sync"
 
-  table_name = module.dynamodb.weather_table_name
+  weather_table_name        = module.dynamodb.weather_table_name
+  hourly_weather_table_name = module.dynamodb.hourly_weather_table_name
+
   region     = var.region
   account_id = var.account_id
 }
