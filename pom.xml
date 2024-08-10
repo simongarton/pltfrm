@@ -14,6 +14,7 @@
         <module>common</module>
         <module>lambda</module>
         <module>weather</module>
+        <module>graphql-client</module>
     </modules>
 
     <properties>

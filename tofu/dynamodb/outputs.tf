@@ -6,3 +6,7 @@ output "dynamodb_table_arns" {
     aws_dynamodb_table.pltfrm_weather_log_table.arn
   ]
 }
+
+output "weather_table_name" {
+  value = aws_dynamodb_table.pltfrm_weather_weather_table.name
+}

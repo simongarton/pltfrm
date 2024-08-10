@@ -1,0 +1,27 @@
+type Query {
+    getWeather(timestamp: String!): WeatherReport
+}
+
+type IntervalMeasurement {
+    timestamp: String!
+    measurement: Float!
+}
+
+type WeatherReport {
+    FeelsLike: Float
+    Temperature: Float
+    Clouds: Float
+    Uvi: Float
+    WindSpeed: Float
+    DewPoint: Float
+    Pressure: Int
+    Weather: String
+    Humidity: Int
+    WindDeg: Int
+    Visibility: Int
+    Rain: [IntervalMeasurement!]
+}
+
+schema {
+    query: Query
+}

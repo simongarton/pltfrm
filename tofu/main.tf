@@ -39,6 +39,16 @@ module "kms" {
   source = "./kms"
 }
 
+module "app_sync" {
+
+  source = "./app_sync"
+
+  table_name = module.dynamodb.weather_table_name
+  region     = var.region
+  account_id = var.account_id
+}
+
+
 module "s3" {
 
   source = "./s3"
