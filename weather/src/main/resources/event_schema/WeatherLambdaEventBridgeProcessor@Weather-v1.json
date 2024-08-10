@@ -1,0 +1,262 @@
+{
+  "openapi": "3.0.0",
+  "info": { "version": "1.0.0", "title": "Weather" },
+  "paths": {},
+  "components": {
+    "schemas": {
+      "AWSEvent": {
+        "type": "object",
+        "required": [
+          "detail-type",
+          "resources",
+          "detail",
+          "id",
+          "source",
+          "time",
+          "region",
+          "version",
+          "account"
+        ],
+        "x-amazon-events-detail-type": "weather",
+        "x-amazon-events-source": "WeatherLambdaEventBridgeProcessor",
+        "properties": {
+          "detail": { "$ref": "#/components/schemas/Weather" },
+          "account": { "type": "string" },
+          "detail-type": { "type": "string" },
+          "id": { "type": "string" },
+          "region": { "type": "string" },
+          "resources": { "type": "array", "items": { "type": "object" } },
+          "source": { "type": "string" },
+          "time": { "type": "string", "format": "date-time" },
+          "version": { "type": "string" }
+        }
+      },
+      "Weather": {
+        "type": "object",
+        "required": [
+          "alerts",
+          "current",
+          "timezone",
+          "daily",
+          "timezone_offset",
+          "hourly",
+          "lon",
+          "minutely",
+          "lat"
+        ],
+        "properties": {
+          "current": { "$ref": "#/components/schemas/Current" },
+          "alerts": { "type": "object", "nullable": true },
+          "daily": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/WeatherItem" }
+          },
+          "hourly": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/WeatherItem_1" }
+          },
+          "lat": { "type": "number" },
+          "lon": { "type": "number", "format": "double" },
+          "minutely": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/WeatherItem_2" }
+          },
+          "timezone": { "type": "string" },
+          "timezone_offset": { "type": "number" }
+        }
+      },
+      "Current": {
+        "type": "object",
+        "required": [
+          "rain",
+          "sunrise",
+          "temp",
+          "visibility",
+          "uvi",
+          "clouds",
+          "pressure",
+          "feels_like",
+          "wind_gust",
+          "dt",
+          "wind_deg",
+          "dew_point",
+          "sunset",
+          "weather",
+          "humidity",
+          "wind_speed"
+        ],
+        "properties": {
+          "clouds": { "type": "number", "format": "double" },
+          "dew_point": { "type": "number", "format": "double" },
+          "dt": { "type": "number" },
+          "feels_like": { "type": "number", "format": "double" },
+          "humidity": { "type": "number" },
+          "pressure": { "type": "number" },
+          "rain": { "type": "object", "nullable": true },
+          "sunrise": { "type": "number" },
+          "sunset": { "type": "number" },
+          "temp": { "type": "number", "format": "double" },
+          "uvi": { "type": "number", "format": "double" },
+          "visibility": { "type": "number" },
+          "weather": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/CurrentItem" }
+          },
+          "wind_deg": { "type": "number" },
+          "wind_gust": { "type": "number" },
+          "wind_speed": { "type": "number", "format": "double" }
+        }
+      },
+      "WeatherItem": {
+        "type": "object",
+        "required": [
+          "moonset",
+          "summary",
+          "rain",
+          "sunrise",
+          "temp",
+          "moon_phase",
+          "uvi",
+          "clouds",
+          "moonrise",
+          "pressure",
+          "feels_like",
+          "wind_gust",
+          "dt",
+          "pop",
+          "wind_deg",
+          "dew_point",
+          "sunset",
+          "weather",
+          "humidity",
+          "wind_speed"
+        ],
+        "properties": {
+          "feels_like": { "$ref": "#/components/schemas/Feels_like" },
+          "temp": { "$ref": "#/components/schemas/Temp" },
+          "clouds": { "type": "number", "format": "double" },
+          "dew_point": { "type": "number", "format": "double" },
+          "dt": { "type": "number" },
+          "humidity": { "type": "number" },
+          "moon_phase": { "type": "number", "format": "double" },
+          "moonrise": { "type": "number" },
+          "moonset": { "type": "number" },
+          "pop": { "type": "number", "format": "double" },
+          "pressure": { "type": "number" },
+          "rain": { "type": "number", "format": "double" },
+          "summary": { "type": "string" },
+          "sunrise": { "type": "number" },
+          "sunset": { "type": "number" },
+          "uvi": { "type": "number", "format": "double" },
+          "weather": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/WeatherItemItem" }
+          },
+          "wind_deg": { "type": "number" },
+          "wind_gust": { "type": "number", "format": "double" },
+          "wind_speed": { "type": "number", "format": "double" }
+        }
+      },
+      "WeatherItem_1": {
+        "type": "object",
+        "required": [
+          "rain",
+          "temp",
+          "visibility",
+          "uvi",
+          "clouds",
+          "pressure",
+          "feels_like",
+          "wind_gust",
+          "dt",
+          "pop",
+          "wind_deg",
+          "dew_point",
+          "weather",
+          "humidity",
+          "wind_speed"
+        ],
+        "properties": {
+          "clouds": { "type": "number", "format": "double" },
+          "dew_point": { "type": "number", "format": "double" },
+          "dt": { "type": "number" },
+          "feels_like": { "type": "number", "format": "double" },
+          "humidity": { "type": "number" },
+          "pop": { "type": "number", "format": "double" },
+          "pressure": { "type": "number" },
+          "rain": { "type": "object", "nullable": true },
+          "temp": { "type": "number", "format": "double" },
+          "uvi": { "type": "number", "format": "double" },
+          "visibility": { "type": "number" },
+          "weather": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/WeatherItem_1Item" }
+          },
+          "wind_deg": { "type": "number" },
+          "wind_gust": { "type": "number", "format": "double" },
+          "wind_speed": { "type": "number", "format": "double" }
+        }
+      },
+      "WeatherItem_2": {
+        "type": "object",
+        "required": ["dt", "precipitation"],
+        "properties": {
+          "dt": { "type": "number" },
+          "precipitation": { "type": "number" }
+        }
+      },
+      "CurrentItem": {
+        "type": "object",
+        "required": ["icon", "description", "main", "id"],
+        "properties": {
+          "description": { "type": "string" },
+          "icon": { "type": "string" },
+          "id": { "type": "number" },
+          "main": { "type": "string" }
+        }
+      },
+      "Feels_like": {
+        "type": "object",
+        "required": ["eve", "night", "day", "morn"],
+        "properties": {
+          "day": { "type": "number", "format": "double" },
+          "eve": { "type": "number", "format": "double" },
+          "morn": { "type": "number", "format": "double" },
+          "night": { "type": "number", "format": "double" }
+        }
+      },
+      "Temp": {
+        "type": "object",
+        "required": ["min", "eve", "max", "night", "day", "morn"],
+        "properties": {
+          "day": { "type": "number", "format": "double" },
+          "eve": { "type": "number", "format": "double" },
+          "max": { "type": "number", "format": "double" },
+          "min": { "type": "number", "format": "double" },
+          "morn": { "type": "number", "format": "double" },
+          "night": { "type": "number", "format": "double" }
+        }
+      },
+      "WeatherItemItem": {
+        "type": "object",
+        "required": ["icon", "description", "main", "id"],
+        "properties": {
+          "description": { "type": "string" },
+          "icon": { "type": "string" },
+          "id": { "type": "number" },
+          "main": { "type": "string" }
+        }
+      },
+      "WeatherItem_1Item": {
+        "type": "object",
+        "required": ["icon", "description", "main", "id"],
+        "properties": {
+          "description": { "type": "string" },
+          "icon": { "type": "string" },
+          "id": { "type": "number" },
+          "main": { "type": "string" }
+        }
+      }
+    }
+  }
+}

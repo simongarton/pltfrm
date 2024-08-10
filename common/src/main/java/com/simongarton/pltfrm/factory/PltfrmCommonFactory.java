@@ -65,4 +65,8 @@ public class PltfrmCommonFactory {
     public static PltfrmCloudwatchService getPltfrmCloudwatchService() {
         return new PltfrmCloudwatchService();
     }
+
+    public static PltfrmEventBridgeService getPltfrmEventBridgeService() {
+        return new PltfrmEventBridgeService();
+    }
 }

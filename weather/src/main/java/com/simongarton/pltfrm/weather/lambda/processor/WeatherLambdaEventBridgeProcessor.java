@@ -3,6 +3,7 @@ package com.simongarton.pltfrm.weather.lambda.processor;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.simongarton.pltfrm.factory.PltfrmCommonFactory;
+import com.simongarton.pltfrm.service.PltfrmEventBridgeService;
 import com.simongarton.pltfrm.service.PltfrmS3Service;
 import com.simongarton.pltfrm.service.PltfrmSNSService;
 import com.simongarton.pltfrm.service.PltfrmSSMService;
@@ -17,10 +18,14 @@ public class WeatherLambdaEventBridgeProcessor {
 
     private static final String WEATHER_TOPIC_ARN = "/pltfrm/weather-topic-arn";
     private static final String WEATHER_BUCKET_NAME = "/pltfrm/weather-bucket-name";
+    private static final String PLTFRM_WEATHER_EVENT_BUS_NAME = "pltfrm-weather-event-bus";
+    public static final String WEATHER = "weather";
 
     private final ObjectMapper objectMapper;
     private final PltfrmS3Service s3Service;
     private final PltfrmSNSService snsService;
+    final PltfrmEventBridgeService eventBridgeService;
+
     private final OpenWeatherMapClient openWeatherMapClient;
 
     private final String topicArn;
@@ -29,10 +34,12 @@ public class WeatherLambdaEventBridgeProcessor {
     public WeatherLambdaEventBridgeProcessor(
             final PltfrmSNSService snsService,
             final PltfrmS3Service s3Service,
+            final PltfrmEventBridgeService eventBridgeService,
             final OpenWeatherMapClient openWeatherMapClient
     ) {
         this.snsService = snsService;
         this.s3Service = s3Service;
+        this.eventBridgeService = eventBridgeService;
         this.openWeatherMapClient = openWeatherMapClient;
         this.objectMapper = PltfrmCommonFactory.getObjectMapper();
 
@@ -53,5 +60,11 @@ public class WeatherLambdaEventBridgeProcessor {
                 .key(filename)
                 .build();
         this.snsService.publish(this.objectMapper.writeValueAsString(fileNotification), this.topicArn);
+
+        this.eventBridgeService.putEvent(
+                PLTFRM_WEATHER_EVENT_BUS_NAME,
+                this.getClass().getSimpleName(),
+                WEATHER,
+                this.objectMapper.writeValueAsString(weatherCurrentAndForecast));
     }
 }

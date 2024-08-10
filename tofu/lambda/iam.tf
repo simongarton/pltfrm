@@ -10,12 +10,12 @@ resource "aws_iam_role" "pltfrm_lambda_iam" {
   name = "pltfrm-lambda-iam"
 
   assume_role_policy = jsonencode({
-    Version   = "2012-10-17"
+    Version = "2012-10-17"
     Statement = [
       {
-        Sid       = "AssumeRolePolicy"
-        Action    = "sts:AssumeRole"
-        Effect    = "Allow"
+        Sid    = "AssumeRolePolicy"
+        Action = "sts:AssumeRole"
+        Effect = "Allow"
         Principal = {
           Service = "lambda.amazonaws.com"
         }
@@ -28,7 +28,7 @@ resource "aws_iam_policy" "pltfrm_iam_pass_role" {
   name = "pltfrm-iam-pass-role"
 
   policy = jsonencode({
-    Version   = "2012-10-17"
+    Version = "2012-10-17"
     Statement = [
       {
         Sid      = "PassRolePolicy"
@@ -44,7 +44,7 @@ resource "aws_iam_policy" "pltfrm_infrastructure_policy" {
   name = "pltfrm-s3-infrastructure-policy"
 
   policy = jsonencode({
-    Version   = "2012-10-17"
+    Version = "2012-10-17"
     Statement = [
       {
         Sid    = "KMSPolicy",
@@ -67,6 +67,15 @@ resource "aws_iam_policy" "pltfrm_infrastructure_policy" {
         ]
         Resource = "*"
       },
+      {
+        Sid    = "EventBridgePolicy",
+        Effect = "Allow"
+        Action = [
+          "events:PutEvents"
+        ]
+        Resource = var.event_bus_arn
+      },
+
     ]
   })
 }
@@ -75,7 +84,7 @@ resource "aws_iam_policy" "pltfrm_s3_policy" {
   name = "pltfrm-s3-policy"
 
   policy = jsonencode({
-    Version   = "2012-10-17"
+    Version = "2012-10-17"
     Statement = [
       {
         Sid    = "S3BucketPolicy"
@@ -96,7 +105,7 @@ resource "aws_iam_policy" "pltfrm_sns_sqs_policy" {
   name = "pltfrm-sns-sqs-policy"
 
   policy = jsonencode({
-    Version   = "2012-10-17"
+    Version = "2012-10-17"
     Statement = [
       {
         Sid    = "SNSPublishPolicy"
@@ -125,7 +134,7 @@ resource "aws_iam_policy" "pltfrm_database_policy" {
   name = "pltfrm-database-policy"
 
   policy = jsonencode({
-    Version   = "2012-10-17"
+    Version = "2012-10-17"
     Statement = [
       {
         Sid    = "TimestreamDatabasePolicy"

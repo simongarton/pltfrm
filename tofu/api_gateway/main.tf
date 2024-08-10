@@ -9,7 +9,7 @@ resource "aws_api_gateway_rest_api" "api" {
 }
 
 resource "aws_api_gateway_deployment" "pltfrm_deployment" {
-  rest_api_id       = aws_api_gateway_rest_api.api.id
+  rest_api_id = aws_api_gateway_rest_api.api.id
   stage_description = md5(timestamp())
 
   lifecycle {
@@ -84,6 +84,6 @@ resource "aws_ssm_parameter" "pltfrm_api_key" {
   tags = {
     Name    = "API Key"
     Owner   = "simon.garton@gmail.com"
-    Project = "PicoMeters HeadEnd"
+    Project = "pltfrm"
   }
 }

@@ -6,6 +6,7 @@ import com.amazonaws.services.lambda.runtime.RequestHandler;
 import com.amazonaws.services.lambda.runtime.events.ScheduledEvent;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.simongarton.pltfrm.factory.PltfrmCommonFactory;
+import com.simongarton.pltfrm.service.PltfrmEventBridgeService;
 import com.simongarton.pltfrm.service.PltfrmS3Service;
 import com.simongarton.pltfrm.service.PltfrmSNSService;
 import com.simongarton.pltfrm.service.PltfrmSSMService;
@@ -23,6 +24,7 @@ public class WeatherLambdaEventBridgeRequestHandler implements RequestHandler<Sc
     private static final String WEATHER_API_KEY = "/pltfrm/openweathermap-api-key";
 
     final private WeatherLambdaEventBridgeProcessor processor;
+
     final private ObjectMapper objectMapper;
 
     public WeatherLambdaEventBridgeRequestHandler() {
@@ -31,9 +33,13 @@ public class WeatherLambdaEventBridgeRequestHandler implements RequestHandler<Sc
         final String apiKey = pltfrmSSMService.getSecureParameterValue(WEATHER_API_KEY);
         final PltfrmS3Service pltfrmS3Service = PltfrmCommonFactory.getPltfrmS3Service();
         final PltfrmSNSService pltfrmSNSService = PltfrmCommonFactory.getPltfrmSNSService();
+        final PltfrmEventBridgeService pltfrmEventBridgeService = PltfrmCommonFactory.getPltfrmEventBridgeService();
         final OpenWeatherMapClient openWeatherMapClient = new OpenWeatherMapClient(url, apiKey);
 
-        this.processor = new WeatherLambdaEventBridgeProcessor(pltfrmSNSService, pltfrmS3Service, openWeatherMapClient);
+        this.processor = new WeatherLambdaEventBridgeProcessor(pltfrmSNSService,
+                pltfrmS3Service,
+                pltfrmEventBridgeService,
+                openWeatherMapClient);
         this.objectMapper = PltfrmCommonFactory.getObjectMapper();
     }
 

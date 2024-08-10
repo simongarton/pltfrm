@@ -3,23 +3,33 @@
 Welcome to `pltfrm` : an AWS platform, designed as a portfolio, demonstration site, and a chance to explore new
 technologies and ideas.
 
-## Overview
-
-### Stage 1 : Wthr
+## Stage 1 : Wthr
 
 This stage is a simple weather application, which uses the OpenWeatherMap API to retrieve weather data for a given
 location - where I live. It exposes APIs to call for current and forecasted weather, and also stores data in Timestream,
 AWS's time-series database, that allows me to (a) build up history, and also (b) see how forecasts can change over time.
 
-![Part 1](./documentation/images/pltfrm-wthr-1.png)
-
-![Part 2](./documentation/images/pltfrm-wthr-2.png)
+![pltfrm](./documentation/images/pltfrm.png)
 
 Endpoints:
 
 ```
 GET {url}/weather : text description of the weather now in Auckland.
 ```
+
+### Functionality implemented
+
+- API Gateway : to expose the API
+- Lambda : to process the API requests
+- Timestream : to store weather data
+- DynamoDB : to store weather data
+- KMS : to encrypt "sensitive" data
+- CloudWatch : to log events
+- SSM : to store configuration data
+- EventBridge : to trigger the Lambda function
+- EventBridge : to provide an EventBus (with rules
+- SNS : to send notifications
+- SQS : to store notifications, for processing or just to keep a record
 
 ## Front end
 

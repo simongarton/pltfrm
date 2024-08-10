@@ -13,6 +13,7 @@ import software.amazon.awssdk.http.apache.ApacheHttpClient;
 import software.amazon.awssdk.regions.Region;
 import software.amazon.awssdk.services.cloudwatch.CloudWatchClient;
 import software.amazon.awssdk.services.dynamodb.DynamoDbClient;
+import software.amazon.awssdk.services.eventbridge.EventBridgeClient;
 import software.amazon.awssdk.services.timestreamquery.TimestreamQueryClient;
 import software.amazon.awssdk.services.timestreamwrite.TimestreamWriteClient;
 
@@ -85,6 +86,12 @@ public class AWSFactory {
     public static DynamoDbEnhancedClient getDynamoDBEnhancedClient(final DynamoDbClient dynamoDBClient) {
         return DynamoDbEnhancedClient.builder()
                 .dynamoDbClient(dynamoDBClient)
+                .build();
+    }
+
+    public static EventBridgeClient getEventBridgeClient() {
+        return EventBridgeClient.builder()
+                .region(region)
                 .build();
     }
 }

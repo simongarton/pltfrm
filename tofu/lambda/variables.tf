@@ -18,3 +18,4 @@ variable "weather_queue_arn" {}
 
 variable "dynamodb_table_arns" {}
 
+variable "event_bus_arn" {}

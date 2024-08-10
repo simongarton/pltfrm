@@ -17,13 +17,11 @@ public class PltfrmCloudwatchService {
     private static final String METHOD = "method";
     private static final String OUTCOME = "outcome";
 
-    private static final String PAYLOAD = "payload";
-    private static final String SERIAL_NUMBER = "serial_number";
 
     private final CloudWatchClient cloudWatch;
 
     // this will vary, so not common code
-    private final String NAMESPACE = "picometers-headend";
+    private final String NAMESPACE = "pltfrm";
 
     private static final Logger LOG = LoggerFactory.getLogger(PltfrmCloudwatchService.class.getSimpleName());
 
@@ -62,30 +60,6 @@ public class PltfrmCloudwatchService {
                 .value(1D)
                 .unit(StandardUnit.COUNT)
                 .dimensions(dimensionList)
-                .timestamp(Instant.now())
-                .build();
-
-        final PutMetricDataRequest putMetricDataRequest = PutMetricDataRequest.builder()
-                .namespace(this.NAMESPACE)
-                .metricData(metricDatum)
-                .build();
-
-        final PutMetricDataResponse putMetricDataResponse = this.cloudWatch.putMetricData(putMetricDataRequest);
-    }
-
-    public void addPayload(final String serialNumber) {
-        LOG.info("Adding payload metric for " + serialNumber);
-
-        final Dimension sourceDimension = Dimension.builder()
-                .name(SERIAL_NUMBER)
-                .value(serialNumber)
-                .build();
-
-        final MetricDatum metricDatum = MetricDatum.builder()
-                .metricName(PAYLOAD)
-                .value(1D)
-                .unit(StandardUnit.COUNT)
-                .dimensions(List.of(sourceDimension))
                 .timestamp(Instant.now())
                 .build();
 
