@@ -18,14 +18,14 @@ public class PltfrmEventBridgeService {
         LOG.info("Built EventBridgeService");
     }
 
-    public void putEvent(final String busName, final String source, final String detailType, final String detail) {
-        LOG.info("Putting event for " + source + ":" + detailType + ":" + detail);
+    public void putEvent(final String busName, final String packageName, final String className, final String detail) {
+        LOG.info("Putting event for " + packageName + ":" + className + ":" + detail);
         this.eventBridgeClient.putEvents(
                 PutEventsRequest.builder()
                         .entries(
                                 PutEventsRequestEntry.builder()
-                                        .source(source)
-                                        .detailType(detailType)
+                                        .source(packageName)
+                                        .detailType(className)
                                         .detail(detail)
                                         .eventBusName(busName)
                                         .build()

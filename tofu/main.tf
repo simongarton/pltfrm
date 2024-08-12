@@ -12,6 +12,21 @@ module "lambda" {
   event_bus_arn        = module.eventbridge.event_bus_arn
 }
 
+module "sns" {
+  source = "./sns"
+
+  topic_name         = "pltfrm-weather-rain-topic"
+  topic_name_for_ssm = "/pltfrm/weather-rain-topic-arn"
+}
+
+module "sns_email_subscription" {
+
+  source = "./sns_email_subscription"
+
+  topic_arn     = module.sns.topic.arn
+  email_address = "simon.garton@gmail.com"
+}
+
 module "api_gateway" {
 
   source = "./api_gateway"
@@ -28,10 +43,15 @@ module "eventbridge" {
 
   weather_eventbridge_lambda = module.lambda.weather_eventbridge_lambda
   event_bus_name             = "pltfrm-weather-event-bus"
-  event_sqs_queue_arn        = module.event_sqs.queue.arn
-  event_sqs_queue_url        = module.event_sqs.queue.url
-  weather_rule_description   = "Weather Events"
-  weather_rule_name          = "weather_event_rule"
+
+  all_events_sqs_queue_arn            = module.event_sqs.queue.arn
+  event_sqs_queue_url                 = module.event_sqs.queue.url
+  weather_rule_name_all_events        = "weather_event_rule_all_events"
+  weather_rule_description_all_events = "Weather Events (All)"
+
+  rain_topic_arn                = module.sns.topic.arn
+  weather_rule_name_rain        = "weather_event_rule_rain"
+  weather_rule_description_rain = "Weather Events (Rain)"
 }
 
 module "kms" {

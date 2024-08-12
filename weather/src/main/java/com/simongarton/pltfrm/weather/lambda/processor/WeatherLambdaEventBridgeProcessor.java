@@ -19,7 +19,6 @@ public class WeatherLambdaEventBridgeProcessor {
     private static final String WEATHER_TOPIC_ARN = "/pltfrm/weather-topic-arn";
     private static final String WEATHER_BUCKET_NAME = "/pltfrm/weather-bucket-name";
     private static final String PLTFRM_WEATHER_EVENT_BUS_NAME = "pltfrm-weather-event-bus";
-    public static final String WEATHER = "weather";
 
     private final ObjectMapper objectMapper;
     private final PltfrmS3Service s3Service;
@@ -63,8 +62,8 @@ public class WeatherLambdaEventBridgeProcessor {
 
         this.eventBridgeService.putEvent(
                 PLTFRM_WEATHER_EVENT_BUS_NAME,
-                this.getClass().getSimpleName(),
-                WEATHER,
+                this.getClass().getPackageName(),
+                weatherCurrentAndForecast.getClass().getSimpleName(),
                 this.objectMapper.writeValueAsString(weatherCurrentAndForecast));
     }
 }
